@@ -21,6 +21,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Units available for conversion
+        Unit[] units = {
+                new Unit("oz", UnitType.WEIGHT, 1),
+                new Unit("cups", UnitType.VOLUME, 1),
+                new Unit("grams", UnitType.WEIGHT, 0.035274),
+                new Unit("tsp", UnitType.VOLUME, 0.0208333)
+        };
+
         // Setup database
         dbHelper = new DatabaseHelper(this);
         try {
@@ -52,5 +60,13 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> ingredientAdapter) {
             }
         });
+
+        // Show units in from and to spinners
+        Spinner fromSpinner = (Spinner) findViewById(R.id.fromUnit);
+        Spinner toSpinner = (Spinner) findViewById(R.id.toUnit);
+        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fromSpinner.setAdapter(unitAdapter);
+        toSpinner.setAdapter(unitAdapter);
     }
 }
