@@ -17,4 +17,12 @@ public class Unit {
     public String toString() {
         return name;
     }
+
+    public double toBase() {
+        return toBase;
+    }
+
+    public double fromBase() {
+        return 1.0 / toBase;
+    }
 }

@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Units available for conversion
+        // TODO Store units in database
         Unit[] units = {
                 new Unit("oz", UnitType.WEIGHT, 1),
                 new Unit("cups", UnitType.VOLUME, 1),
@@ -38,35 +41,49 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Show ingredients in spinner
-        Spinner ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
+        final Spinner ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
         List<Ingredient> ingredients = dbHelper.getIngredients();
-        final IngredientAdapter ingredientAdapter = new IngredientAdapter(this, android.R.layout.simple_spinner_item, ingredients);
+        IngredientAdapter ingredientAdapter = new IngredientAdapter(this, android.R.layout.simple_spinner_item, ingredients);
         //ArrayAdapter<CharSequence> ingredientAdapter = ArrayAdapter.createFromResource(this, R.array.planets_array, android.R.layout.simple_spinner_item);
         ingredientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ingredientSpinner.setAdapter(ingredientAdapter);
-        ingredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> ingredientAdapterView, View view,
-                                       int position, long id) {
-                // Here you get the current item (a User object) that is selected by its position
-                Ingredient currentIngredient = ingredientAdapter.getItem(position);
-                // Here you can do the action you want to...
-                Toast.makeText(getApplicationContext(), "Name: " + currentIngredient.getName(),
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> ingredientAdapter) {
-            }
-        });
 
         // Show units in from and to spinners
-        Spinner fromSpinner = (Spinner) findViewById(R.id.fromUnit);
-        Spinner toSpinner = (Spinner) findViewById(R.id.toUnit);
+        final Spinner fromSpinner = (Spinner) findViewById(R.id.fromUnit);
+        final Spinner toSpinner = (Spinner) findViewById(R.id.toUnit);
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fromSpinner.setAdapter(unitAdapter);
         toSpinner.setAdapter(unitAdapter);
+
+        Button button = (Button) findViewById(R.id.convert);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ingredient ingredient;
+                Unit fromUnit;
+                Unit toUnit;
+                double fromVal;
+                double toVal;
+
+                ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
+                fromUnit = (Unit) fromSpinner.getSelectedItem();
+                toUnit = (Unit) toSpinner.getSelectedItem();
+                fromVal = Double.parseDouble(((EditText) findViewById(R.id.fromValue)).getText().toString());
+
+                double baseVal = fromVal * fromUnit.toBase;
+                if (fromUnit.type != toUnit.type) {
+                    if (fromUnit.type == UnitType.WEIGHT) {
+                        baseVal /= ingredient.getOzPerCup();
+                    } else {
+                        baseVal *= ingredient.getOzPerCup();
+                    }
+                }
+                toVal = toUnit.fromBase() * baseVal;
+
+                EditText display = (EditText) findViewById(R.id.toValue);
+                display.setText(String.format("%f", toVal));
+            }
+        });
     }
 }
