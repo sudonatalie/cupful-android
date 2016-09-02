@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         // Units available for conversion
         // TODO Store units in database
         Unit[] units = {
-                new Unit("oz", UnitType.WEIGHT, 1),
+                new Unit("oz", UnitType.WEIGHT, 28.3495),
                 new Unit("cups", UnitType.VOLUME, 1),
-                new Unit("grams", UnitType.WEIGHT, 0.035274),
+                new Unit("grams", UnitType.WEIGHT, 1),
                 new Unit("tsp", UnitType.VOLUME, 0.0208333)
         };
 
@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
                 double baseVal = fromVal * fromUnit.toBase;
                 if (fromUnit.type != toUnit.type) {
                     if (fromUnit.type == UnitType.WEIGHT) {
-                        baseVal /= ingredient.getOzPerCup();
+                        baseVal /= ingredient.getBaseDensity();
                     } else {
-                        baseVal *= ingredient.getOzPerCup();
+                        baseVal *= ingredient.getBaseDensity();
                     }
                 }
                 toVal = toUnit.fromBase() * baseVal;

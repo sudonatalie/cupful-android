@@ -3,12 +3,12 @@ package com.natalieperna.cupful;
 public class Ingredient {
     private int id;
     private String name;
-    private double ozPerCup;
+    private double baseDensity;
 
-    public Ingredient(int id, String name, double ozPerCup) {
+    public Ingredient(int id, String name, double baseDensity) {
         this.id = id;
         this.name = name;
-        this.ozPerCup = ozPerCup;
+        this.baseDensity = baseDensity;
     }
 
     public int getId() {
@@ -19,7 +19,7 @@ public class Ingredient {
         return name;
     }
 
-    public double getOzPerCup() {
-        return ozPerCup;
+    public double getBaseDensity() {
+        return baseDensity;
     }
 }
