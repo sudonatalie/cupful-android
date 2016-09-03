@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Input button styling -->
+    <style name="InputButtons">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/colorIcons</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
 </resources>
