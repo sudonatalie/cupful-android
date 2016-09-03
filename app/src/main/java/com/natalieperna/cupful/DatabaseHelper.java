@@ -106,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Ingredient> getIngredients() {
         SQLiteDatabase db = SQLiteDatabase.openDatabase(filePath, null, SQLiteDatabase.OPEN_READONLY);
-        String query = "SELECT id, name, gPerCup FROM ingredient";
+        String query = "SELECT id, name, gPerCup FROM ingredient ORDER BY name";
         Cursor cursor = db.rawQuery(query, null);
         List<Ingredient> list = new ArrayList<>();
         while (cursor.moveToNext()) {
