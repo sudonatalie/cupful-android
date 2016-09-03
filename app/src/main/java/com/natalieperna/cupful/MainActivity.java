@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         buttonBackspace = (Button) findViewById(R.id.button_back);
         buttonConvert = (Button) findViewById(R.id.convert);
 
+        buttonQuarter = (Button) findViewById(R.id.button_quarter);
+        buttonThird = (Button) findViewById(R.id.button_third);
+        buttonHalf = (Button) findViewById(R.id.button_half);
+
         ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
         fromSpinner = (Spinner) findViewById(R.id.fromUnit);
         toSpinner = (Spinner) findViewById(R.id.toUnit);
@@ -113,28 +117,28 @@ public class MainActivity extends AppCompatActivity {
                 toVal = toUnit.fromBase() * baseVal;
 
                 EditText display = (EditText) findViewById(R.id.toValue);
-                display.setText(String.format("%f", toVal));
+                display.setText(naturalFormat(toVal));
             }
         });
 
         // Set up number input buttons, dot, and backspace
-        View.OnClickListener inputListener = new View.OnClickListener() {
+        View.OnClickListener numberInputListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 insertNumber((Button) view);
             }
         };
 
-        button0.setOnClickListener(inputListener);
-        button1.setOnClickListener(inputListener);
-        button2.setOnClickListener(inputListener);
-        button3.setOnClickListener(inputListener);
-        button4.setOnClickListener(inputListener);
-        button5.setOnClickListener(inputListener);
-        button6.setOnClickListener(inputListener);
-        button7.setOnClickListener(inputListener);
-        button8.setOnClickListener(inputListener);
-        button9.setOnClickListener(inputListener);
+        button0.setOnClickListener(numberInputListener);
+        button1.setOnClickListener(numberInputListener);
+        button2.setOnClickListener(numberInputListener);
+        button3.setOnClickListener(numberInputListener);
+        button4.setOnClickListener(numberInputListener);
+        button5.setOnClickListener(numberInputListener);
+        button6.setOnClickListener(numberInputListener);
+        button7.setOnClickListener(numberInputListener);
+        button8.setOnClickListener(numberInputListener);
+        button9.setOnClickListener(numberInputListener);
 
         buttonDot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +153,18 @@ public class MainActivity extends AppCompatActivity {
                 backspace();
             }
         });
+
+        // Set up fractional input buttons
+        View.OnClickListener fractionInputListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFraction((Button) view);
+            }
+        };
+
+        buttonQuarter.setOnClickListener(fractionInputListener);
+        buttonThird.setOnClickListener(fractionInputListener);
+        buttonHalf.setOnClickListener(fractionInputListener);
     }
 
     private void insertNumber(Button button) {
@@ -174,5 +190,47 @@ public class MainActivity extends AppCompatActivity {
         if (length > 0) {
             field.delete(length - 1, length);
         }
+    }
+
+    private void addFraction(Button button) {
+        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+
+        String focusString = focused.getText().toString();
+
+        double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
+
+        switch (button.getText().toString()) {
+            case "¼":
+                val += 0.25;
+                break;
+            case "⅓":
+                val += 0.33;
+                break;
+            case "½":
+                val += 0.5;
+                break;
+        }
+
+        // Weird rounding mostly to account for +⅓ three times
+        double fractional = val % 1;
+        if (fractional <= 0.01 || fractional >= 0.99) {
+            val = Math.round(val);
+        }
+
+        focused.setText(naturalFormat(val));
+        focused.setSelection(focused.getText().length());
+    }
+
+    public static String naturalFormat(double d) {
+        // Format with 2 decimal places
+        String s = String.format("%.2f", d);
+
+        // Remove trailing zeros
+        s = s.replaceAll("0*$", "");
+
+        // Remove trailing dot
+        s = s.replaceAll("\\.$", "");
+
+        return s;
     }
 }
