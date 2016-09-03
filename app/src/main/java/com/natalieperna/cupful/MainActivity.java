@@ -154,6 +154,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonBackspace.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                erase();
+                return true;
+            }
+        });
+
         // Set up fractional input buttons
         View.OnClickListener fractionInputListener = new View.OnClickListener() {
             @Override
@@ -190,6 +198,14 @@ public class MainActivity extends AppCompatActivity {
         if (length > 0) {
             field.delete(length - 1, length);
         }
+    }
+
+    private void erase() {
+        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+
+        Editable field = focused.getText();
+
+        field.clear();
     }
 
     private void addFraction(Button button) {
