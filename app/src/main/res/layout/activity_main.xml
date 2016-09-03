@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.natalieperna.cupful.MainActivity">
 
-    <Spinner
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/ingredient"
         android:layout_width="match_parent"
         android:layout_height="0dp"

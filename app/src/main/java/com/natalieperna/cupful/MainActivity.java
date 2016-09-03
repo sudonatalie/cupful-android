@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // Show ingredients in spinner
         final Spinner ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
         List<Ingredient> ingredients = dbHelper.getIngredients();
-        IngredientAdapter ingredientAdapter = new IngredientAdapter(this, android.R.layout.simple_spinner_item, ingredients);
-        //ArrayAdapter<CharSequence> ingredientAdapter = ArrayAdapter.createFromResource(this, R.array.planets_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ingredients);
         ingredientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ingredientSpinner.setAdapter(ingredientAdapter);
 

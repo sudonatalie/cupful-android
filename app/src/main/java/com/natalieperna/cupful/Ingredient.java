@@ -22,4 +22,8 @@ public class Ingredient {
     public double getBaseDensity() {
         return baseDensity;
     }
+
+    public String toString() {
+        return name;
+    }
 }
