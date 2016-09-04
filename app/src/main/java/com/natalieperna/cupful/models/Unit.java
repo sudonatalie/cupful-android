@@ -20,10 +20,33 @@ public class Unit {
     }
 
     private static Unit[] units = {
-            new Unit("oz", Unit.Type.WEIGHT, 28.3495),
-            new Unit("cups", Unit.Type.VOLUME, 1),
-            new Unit("grams", Unit.Type.WEIGHT, 1),
-            new Unit("tsp", Unit.Type.VOLUME, 0.0208333)
+            new Unit("gram", Unit.Type.WEIGHT, 1),
+            new Unit("kilogram", Unit.Type.WEIGHT, 1000),
+            new Unit("pound (lb)", Unit.Type.WEIGHT, 453.59237),
+            new Unit("ounce", Unit.Type.WEIGHT, 28.349523125),
+
+            // TODO Better way to organize US/UK/metric
+            new Unit("cup (US)", Unit.Type.VOLUME, 1),
+            new Unit("cup (UK)", Unit.Type.VOLUME, 1.0566882094),
+            new Unit("gallon (UK)", Unit.Type.VOLUME, 19.215198808),
+            new Unit("gallon (US, dry)", Unit.Type.VOLUME, 18.618355102),
+            new Unit("gallon (US, liquid)", Unit.Type.VOLUME, 16),
+            new Unit("liter", Unit.Type.VOLUME, 4.2267528377),
+            new Unit("milliliter", Unit.Type.VOLUME, 0.0042267528377),
+            new Unit("fluid ounce (UK)", Unit.Type.VOLUME, 0.12009499255),
+            new Unit("fluid ounce (US)", Unit.Type.VOLUME, 0.125),
+            new Unit("pint (UK)", Unit.Type.VOLUME, 2.401899851),
+            new Unit("pint (US, dry)", Unit.Type.VOLUME, 2.3272943877),
+            new Unit("pint (US, liquid)", Unit.Type.VOLUME, 2),
+            new Unit("quart (UK)", Unit.Type.VOLUME, 4.803799702),
+            new Unit("quart (US, dry)", Unit.Type.VOLUME, 4.6545887754),
+            new Unit("quart (US, liquid)", Unit.Type.VOLUME, 4),
+            new Unit("Tablespoon (metric)", Unit.Type.VOLUME, 0.063401292566),
+            new Unit("Tablespoon (UK)", Unit.Type.VOLUME, 0.060047496275),
+            new Unit("Tablespoon (US)", Unit.Type.VOLUME, 0.0625),
+            new Unit("Teaspoon (metric)", Unit.Type.VOLUME, 0.021133764189),
+            new Unit("Teaspoon (UK)", Unit.Type.VOLUME, 0.015011874069),
+            new Unit("Teaspoon (US)", Unit.Type.VOLUME, 0.020833333334)
     };
 
     public String getName() {
