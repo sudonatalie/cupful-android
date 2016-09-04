@@ -1,7 +1,7 @@
 package com.natalieperna.cupful;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
@@ -25,6 +25,22 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
     EditText valEdit1, valEdit2;
+
+    public static String naturalFormat(double d) {
+        if (d == 0)
+            return "";
+
+        // Format with 2 decimal places
+        String s = String.format("%.2f", d);
+
+        // Remove trailing zeros
+        s = s.replaceAll("0*$", "");
+
+        // Remove trailing dot
+        s = s.replaceAll("\\.$", "");
+
+        return s;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,8 +206,7 @@ public class MainActivity extends AppCompatActivity {
             toEdit = valEdit2;
             fromSpinner = unitSpinner1;
             toSpinner = unitSpinner2;
-        }
-        else {
+        } else {
             fromEdit = valEdit2;
             toEdit = valEdit1;
             fromSpinner = unitSpinner2;
@@ -296,21 +311,5 @@ public class MainActivity extends AppCompatActivity {
 
         focused.setText(naturalFormat(val));
         focused.setSelection(focused.getText().length());
-    }
-
-    public static String naturalFormat(double d) {
-        if (d == 0)
-            return "";
-
-        // Format with 2 decimal places
-        String s = String.format("%.2f", d);
-
-        // Remove trailing zeros
-        s = s.replaceAll("0*$", "");
-
-        // Remove trailing dot
-        s = s.replaceAll("\\.$", "");
-
-        return s;
     }
 }
