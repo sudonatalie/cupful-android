@@ -18,57 +18,69 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-// Ref: http://www.concretepage.com/android/android-ship-sqlite-database-with-apk-copy-sqlite-database-from-assets-folder-to-data-example
-
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String TAG = "DatabaseHelper";
-    private final Context context;
-    private final String filePath;
+    private Context context;
+    private String filePath;
 
     public DatabaseHelper(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
         this.context = context;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String filesDir = context.getFilesDir().getAbsolutePath();
+        filePath = filesDir + "/" + Config.DATABASE_NAME;
+        prepareDatabase();
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String filesDir = context.getFilesDir().getAbsolutePath();
         filePath = filesDir + "/" + Config.DATABASE_NAME;
         prepareDatabase();
     }
 
     private void prepareDatabase() {
-        boolean dbExist = checkDataBase();
-        if (false) { // TODO Make dbExist work here
-            Log.d(TAG, "Database exists.");
+        boolean dbExist = checkDatabase();
+        if (dbExist) {
             int currentDBVersion = getVersionId();
             if (Config.DATABASE_VERSION > currentDBVersion) {
-                Log.d(TAG, "Database version is higher than old.");
-                deleteDb();
+                deleteDatabase();
                 try {
-                    copyDataBase();
+                    copyDatabase();
                 } catch (IOException e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
         } else {
+            this.getReadableDatabase();
             try {
-                copyDataBase();
+                copyDatabase();
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
+            } finally {
+                this.close();
             }
         }
     }
 
-    private boolean checkDataBase() {
-        boolean checkDB = false;
+    private boolean checkDatabase() {
         try {
+            boolean checkDB;
             File file = new File(filePath);
             checkDB = file.exists();
-            // TODO Actually check that expected tables exist
+            // TODO Actually check that expected tables exist?
+            return checkDB;
         } catch (SQLiteException e) {
-            Log.d(TAG, e.getMessage());
+            // TODO Is it actually possible for a SQLiteException to be thrown here
+            Log.e(TAG, e.getMessage());
+            return false;
         }
-        return checkDB;
     }
 
-    private void copyDataBase() throws IOException {
+    private void copyDatabase() throws IOException {
         OutputStream os = new FileOutputStream(filePath);
         InputStream is = context.getAssets().open(Config.DATABASE_NAME);
         byte[] buffer = new byte[1024];
@@ -81,24 +93,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         os.close();
     }
 
-    private void deleteDb() {
+    private void deleteDatabase() {
         File file = new File(filePath);
         if (file.exists()) {
-            file.delete();
-            Log.d(TAG, "Database deleted.");
+            file.delete(); // TODO Check for failure
         }
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, "onCreate");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    }
-
     private int getVersionId() {
+        // TODO Catch errors!
         SQLiteDatabase db = SQLiteDatabase.openDatabase(filePath, null, SQLiteDatabase.OPEN_READONLY);
         String query = "SELECT version_id FROM dbVersion";
         Cursor cursor = db.rawQuery(query, null);
@@ -109,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return v;
     }
 
+    // TODO Move to separate class?
     public List<Ingredient> getIngredients() {
         SQLiteDatabase db = SQLiteDatabase.openDatabase(filePath, null, SQLiteDatabase.OPEN_READONLY);
         String query = "SELECT id, name, gPerCup FROM ingredient ORDER BY name";
