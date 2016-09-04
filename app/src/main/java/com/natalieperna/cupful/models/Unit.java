@@ -12,11 +12,19 @@ public class Unit {
     private final Type type;
     private final double toBase; // multiplier for to OZ (for weights) or to CUPS (for volumes)
 
+    // Units available for conversion
     public Unit(String name, Type type, double toBase) {
         this.toBase = toBase;
         this.name = name;
         this.type = type;
     }
+
+    private static Unit[] units = {
+            new Unit("oz", Unit.Type.WEIGHT, 28.3495),
+            new Unit("cups", Unit.Type.VOLUME, 1),
+            new Unit("grams", Unit.Type.WEIGHT, 1),
+            new Unit("tsp", Unit.Type.VOLUME, 0.0208333)
+    };
 
     public String getName() {
         return name;
@@ -32,6 +40,10 @@ public class Unit {
 
     public double getFromBase() {
         return 1.0 / toBase;
+    }
+
+    public static Unit[] getUnits() {
+        return units;
     }
 
     @Override

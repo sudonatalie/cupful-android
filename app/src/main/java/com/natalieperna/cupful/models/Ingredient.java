@@ -11,16 +11,21 @@ public class Ingredient {
         this.baseDensity = baseDensity;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public double getBaseDensity() {
-        return baseDensity;
+    public double convert(double val, Unit from, Unit to) {
+        double baseVal = val * from.getToBase();
+        if (from.getType() != to.getType()) {
+            if (from.getType() == Unit.Type.WEIGHT) {
+                baseVal /= this.baseDensity;
+            } else {
+                baseVal *= this.baseDensity;
+            }
+        }
+
+        return to.getFromBase() * baseVal;
     }
 
     public String toString() {

@@ -30,9 +30,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.context = context;
         String filesDir = context.getFilesDir().getAbsolutePath();
         filePath = filesDir + "/" + Config.DATABASE_NAME;
+        prepareDatabase();
     }
 
-    public void prepareDatabase() {
+    private void prepareDatabase() {
         boolean dbExist = checkDataBase();
         if (false) { // TODO Make dbExist work here
             Log.d(TAG, "Database exists.");

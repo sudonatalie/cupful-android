@@ -43,16 +43,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Prepare instance state and set view to main
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseHelper dbHelper = null;
+        // Local sqlite database helper
+        DatabaseHelper dbHelper;
 
-        Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
+        // Button widgets
+        Button button0, button1, button2, button3, button4,
+                button5, button6, button7, button8, button9;
         Button buttonDot, buttonBackspace, buttonConvert;
         Button buttonQuarter, buttonThird, buttonHalf;
 
-        // Set up view elements
+        // Set up view widgets
+        ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
+        unitSpinner1 = (Spinner) findViewById(R.id.unit1);
+        unitSpinner2 = (Spinner) findViewById(R.id.unit2);
+
+        valEdit1 = (EditText) findViewById(R.id.value1);
+        valEdit2 = (EditText) findViewById(R.id.value2);
+
         button0 = (Button) findViewById(R.id.button_0);
         button1 = (Button) findViewById(R.id.button_1);
         button2 = (Button) findViewById(R.id.button_2);
@@ -72,31 +83,15 @@ public class MainActivity extends AppCompatActivity {
         buttonThird = (Button) findViewById(R.id.button_third);
         buttonHalf = (Button) findViewById(R.id.button_half);
 
-        ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
-        unitSpinner1 = (Spinner) findViewById(R.id.unit1);
-        unitSpinner2 = (Spinner) findViewById(R.id.unit2);
-
-        valEdit1 = (EditText) findViewById(R.id.value1);
-        valEdit2 = (EditText) findViewById(R.id.value2);
-
-        // Disallow input with keyboard for numerical fields
+        // Disallow input with keyboard for numerical fields,
+        // in favour of on-screen input buttons
         valEdit1.setRawInputType(InputType.TYPE_CLASS_TEXT);
         valEdit2.setRawInputType(InputType.TYPE_CLASS_TEXT);
         valEdit1.setTextIsSelectable(true);
         valEdit2.setTextIsSelectable(true);
 
-        // Units available for conversion
-        // TODO Store units in database
-        Unit[] units = {
-                new Unit("oz", Unit.Type.WEIGHT, 28.3495),
-                new Unit("cups", Unit.Type.VOLUME, 1),
-                new Unit("grams", Unit.Type.WEIGHT, 1),
-                new Unit("tsp", Unit.Type.VOLUME, 0.0208333)
-        };
-
         // Setup database
         dbHelper = new DatabaseHelper(this);
-        dbHelper.prepareDatabase();
 
         // Show ingredients in spinner
         List<Ingredient> ingredients = dbHelper.getIngredients();
@@ -104,12 +99,15 @@ public class MainActivity extends AppCompatActivity {
         ingredientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ingredientSpinner.setAdapter(ingredientAdapter);
 
-        // Show units in from and to spinners
+        // Show units in spinners
+        Unit[] units = Unit.getUnits();
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitSpinner1.setAdapter(unitAdapter);
         unitSpinner2.setAdapter(unitAdapter);
 
+        // Setup convert button
+        // TODO Remove, no longer necessary
         buttonConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,9 +115,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Auto-update (convert) on typing or changing units
-        // Whichever row is changed, the other row updates accordingly (units remaining constant)
-
+        // Auto-update (convert) on changing units
+        // Whichever unit is changed, always change the second row's value accordingly
         unitSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -144,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Set up number input buttons, dot, and backspace
+        // Set up number input buttons
+        // Auto-update (convert) on changing values
+        // Whichever value is changed, the other value changes accordingly
         View.OnClickListener numberInputListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         button8.setOnClickListener(numberInputListener);
         button9.setOnClickListener(numberInputListener);
 
+        // Set up dot button
         buttonDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set up backspace buttons
+        // Click erases last character of focused widget
         buttonBackspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,9 +179,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Long click erases entire focused widget
         buttonBackspace.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onLongClick(View view) {
                 erase();
                 return true;
             }
@@ -199,9 +202,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void convert(boolean forward) {
+        // To/from value and spinner widgets
         EditText fromEdit, toEdit;
         Spinner fromSpinner, toSpinner;
 
+        // Use forward parameter to determine "direction" of conversion
+        // Forward => update lower value based on upper
+        // Backward => update upper value based on lower (when lower value is the widget changing)
         if (forward) {
             fromEdit = valEdit1;
             toEdit = valEdit2;
@@ -214,29 +221,26 @@ public class MainActivity extends AppCompatActivity {
             toSpinner = unitSpinner1;
         }
 
+        // Get values from widgets
         Ingredient ingredient;
         Unit fromUnit;
         Unit toUnit;
         double fromVal;
         double toVal;
 
+        // Get ingredients and units
         ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
         fromUnit = (Unit) fromSpinner.getSelectedItem();
         toUnit = (Unit) toSpinner.getSelectedItem();
 
+        // Get from value
         String fromString = fromEdit.getText().toString();
         fromVal = fromString.isEmpty() ? 0 : Double.parseDouble(fromString);
 
-        double baseVal = fromVal * fromUnit.getToBase();
-        if (fromUnit.getType() != toUnit.getType()) {
-            if (fromUnit.getType() == Unit.Type.WEIGHT) {
-                baseVal /= ingredient.getBaseDensity();
-            } else {
-                baseVal *= ingredient.getBaseDensity();
-            }
-        }
-        toVal = toUnit.getFromBase() * baseVal;
+        // Convert to new value
+        toVal = ingredient.convert(fromVal, fromUnit, toUnit);
 
+        // Display new value
         toEdit.setText(naturalFormat(toVal));
     }
 
