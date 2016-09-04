@@ -1,6 +1,6 @@
 package com.natalieperna.cupful;
 
-public class Ingredient {
+class Ingredient {
     private int id;
     private String name;
     private double baseDensity;

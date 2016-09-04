@@ -18,16 +18,16 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
-    DatabaseHelper dbHelper = null;
+    private DatabaseHelper dbHelper = null;
 
-    Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
-    Button buttonDot, buttonBackspace, buttonConvert;
-    Button buttonQuarter, buttonThird, buttonHalf;
+    private Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
+    private Button buttonDot, buttonBackspace, buttonConvert;
+    private Button buttonQuarter, buttonThird, buttonHalf;
 
-    Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
-    EditText valEdit1, valEdit2;
+    private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
+    private EditText valEdit1, valEdit2;
 
-    public static String naturalFormat(double d) {
+    private static String naturalFormat(double d) {
         if (d == 0)
             return "";
 

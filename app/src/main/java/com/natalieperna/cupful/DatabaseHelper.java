@@ -17,7 +17,7 @@ import java.util.List;
 
 // Ref: http://www.concretepage.com/android/android-ship-sqlite-database-with-apk-copy-sqlite-database-from-assets-folder-to-data-example
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
     private final static String TAG = "DatabaseHelper";
     private final Context context;
     private String filePath;
@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         os.close();
     }
 
-    public void deleteDb() {
+    private void deleteDb() {
         File file = new File(filePath);
         if (file.exists()) {
             file.delete();
