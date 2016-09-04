@@ -22,14 +22,22 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
 
+    // Spinner and EditText widgets
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
     private EditText valEdit1, valEdit2;
+
+    // Last focused value edit widget
+    EditText focused = valEdit1;
+
+    // Conversion direction
+    boolean forward = true;
 
     private static String naturalFormat(double d) {
         if (d == 0)
             return "";
 
         // Format with 2 decimal places
+        // TODO Should have as many decimal places as input as maximum
         String s = String.format(Locale.US, "%.2f", d);
 
         // Remove trailing zeros
@@ -90,6 +98,27 @@ public class MainActivity extends AppCompatActivity {
         valEdit1.setTextIsSelectable(true);
         valEdit2.setTextIsSelectable(true);
 
+        // Keep current focus and direction updated with listeners
+        valEdit1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    focused = valEdit1;
+                    // TODO Isn't there a keyword like `this` that could replace valEdit2 here?
+                    forward = true;
+                }
+            }
+        });
+        valEdit2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    focused = valEdit2;
+                    forward = false;
+                }
+            }
+        });
+
         // Setup database
         dbHelper = new DatabaseHelper(this);
 
@@ -111,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         buttonConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                convert(true);
+                convert();
             }
         });
 
@@ -120,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                convert(true);
+                convert();
             }
 
             @Override
@@ -132,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                convert(true);
+                convert();
             }
 
             @Override
@@ -201,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         buttonHalf.setOnClickListener(fractionInputListener);
     }
 
-    private void convert(boolean forward) {
+    private void convert() {
         // To/from value and spinner widgets
         EditText fromEdit, toEdit;
         Spinner fromSpinner, toSpinner;
@@ -245,54 +274,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertNumber(Button button) {
-        boolean forward = valEdit1.hasFocus();
-        EditText focused = forward ? valEdit1 : valEdit2;
-
         Editable field = focused.getText();
         field.append(button.getText());
 
-        convert(forward);
+        convert();
     }
 
     private void insertDot() {
-        boolean forward = valEdit1.hasFocus();
-        EditText focused = forward ? valEdit1 : valEdit2;
-
         Editable field = focused.getText();
         if (!field.toString().contains("."))
             field.append(".");
 
-        convert(forward);
+        convert();
     }
 
     private void backspace() {
-        boolean forward = valEdit1.hasFocus();
-        EditText focused = forward ? valEdit1 : valEdit2;
-
         Editable field = focused.getText();
         int length = field.length();
         if (length > 0) {
             field.delete(length - 1, length);
         }
 
-        convert(forward);
+        convert();
     }
 
     private void erase() {
-        boolean forward = valEdit1.hasFocus();
-        EditText focused = forward ? valEdit1 : valEdit2;
-
         Editable field = focused.getText();
 
         field.clear();
 
-        convert(forward);
+        convert();
     }
 
     private void addFraction(Button button) {
-        boolean forward = valEdit1.hasFocus();
-        EditText focused = forward ? valEdit1 : valEdit2;
-
         String focusString = focused.getText().toString();
 
         double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
@@ -318,6 +332,6 @@ public class MainActivity extends AppCompatActivity {
         focused.setText(naturalFormat(val));
         focused.setSelection(focused.getText().length());
 
-        convert(forward);
+        convert();
     }
 }
