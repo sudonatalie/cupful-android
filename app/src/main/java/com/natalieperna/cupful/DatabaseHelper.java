@@ -100,6 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         int v = cursor.getInt(0);
+        cursor.close();
         db.close();
         return v;
     }
@@ -117,6 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
             list.add(ingredient);
         }
+        cursor.close();
         db.close();
         return list;
     }
