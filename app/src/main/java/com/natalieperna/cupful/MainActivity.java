@@ -92,11 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup database
         dbHelper = new DatabaseHelper(this);
-        try {
-            dbHelper.prepareDatabase();
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
+        dbHelper.prepareDatabase();
 
         // Show ingredients in spinner
         List<Ingredient> ingredients = dbHelper.getIngredients();

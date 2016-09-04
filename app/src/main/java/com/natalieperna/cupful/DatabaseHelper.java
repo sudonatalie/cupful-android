@@ -29,7 +29,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         filePath = filesDir + "/" + Config.DATABASE_NAME;
     }
 
-    public void prepareDatabase() throws IOException {
+    public void prepareDatabase() {
         boolean dbExist = checkDataBase();
         if (false) { // TODO Make dbExist work here
             Log.d(TAG, "Database exists.");
