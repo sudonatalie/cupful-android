@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener fractionInputListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addFraction((Button) view);
+                addFraction(view);
             }
         };
 
@@ -306,19 +306,19 @@ public class MainActivity extends AppCompatActivity {
         convert();
     }
 
-    private void addFraction(Button button) {
+    private void addFraction(View view) {
         String focusString = focused.getText().toString();
 
         double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
 
-        switch (button.getText().toString()) {
-            case "¼":
+        switch (view.getId()) {
+            case R.id.button_quarter:
                 val += 0.25;
                 break;
-            case "⅓":
+            case R.id.button_third:
                 val += 0.33;
                 break;
-            case "½":
+            case R.id.button_half:
                 val += 0.5;
                 break;
         }
