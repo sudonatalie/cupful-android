@@ -21,14 +21,14 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/fromValue"
+            android:id="@+id/value1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal" />
 
         <Spinner
-            android:id="@+id/fromUnit"
+            android:id="@+id/unit1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -42,14 +42,14 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/toValue"
+            android:id="@+id/value2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal" />
 
         <Spinner
-            android:id="@+id/toUnit"
+            android:id="@+id/unit2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />

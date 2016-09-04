@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
     Button buttonDot, buttonBackspace, buttonConvert;
     Button buttonQuarter, buttonThird, buttonHalf;
 
-    Spinner ingredientSpinner, fromSpinner, toSpinner;
-    EditText fromEdit, toEdit;
+    Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
+    EditText valEdit1, valEdit2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +52,17 @@ public class MainActivity extends AppCompatActivity {
         buttonHalf = (Button) findViewById(R.id.button_half);
 
         ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
-        fromSpinner = (Spinner) findViewById(R.id.fromUnit);
-        toSpinner = (Spinner) findViewById(R.id.toUnit);
+        unitSpinner1 = (Spinner) findViewById(R.id.unit1);
+        unitSpinner2 = (Spinner) findViewById(R.id.unit2);
 
-        fromEdit = (EditText) findViewById(R.id.fromValue);
-        toEdit = (EditText) findViewById(R.id.toValue);
+        valEdit1 = (EditText) findViewById(R.id.value1);
+        valEdit2 = (EditText) findViewById(R.id.value2);
 
         // Disallow input with keyboard for numerical fields
-        fromEdit.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        toEdit.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        fromEdit.setTextIsSelectable(true);
-        toEdit.setTextIsSelectable(true);
+        valEdit1.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        valEdit2.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        valEdit1.setTextIsSelectable(true);
+        valEdit2.setTextIsSelectable(true);
 
         // Units available for conversion
         // TODO Store units in database
@@ -89,35 +90,40 @@ public class MainActivity extends AppCompatActivity {
         // Show units in from and to spinners
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fromSpinner.setAdapter(unitAdapter);
-        toSpinner.setAdapter(unitAdapter);
+        unitSpinner1.setAdapter(unitAdapter);
+        unitSpinner2.setAdapter(unitAdapter);
 
         buttonConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Ingredient ingredient;
-                Unit fromUnit;
-                Unit toUnit;
-                double fromVal;
-                double toVal;
+                convert(true);
+            }
+        });
 
-                ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
-                fromUnit = (Unit) fromSpinner.getSelectedItem();
-                toUnit = (Unit) toSpinner.getSelectedItem();
-                fromVal = Double.parseDouble(((EditText) findViewById(R.id.fromValue)).getText().toString());
+        // Auto-update (convert) on typing or changing units
+        // Whichever row is changed, the other row updates accordingly (units remaining constant)
 
-                double baseVal = fromVal * fromUnit.toBase;
-                if (fromUnit.type != toUnit.type) {
-                    if (fromUnit.type == UnitType.WEIGHT) {
-                        baseVal /= ingredient.getBaseDensity();
-                    } else {
-                        baseVal *= ingredient.getBaseDensity();
-                    }
-                }
-                toVal = toUnit.fromBase() * baseVal;
+        unitSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                convert(true);
+            }
 
-                EditText display = (EditText) findViewById(R.id.toValue);
-                display.setText(naturalFormat(toVal));
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        unitSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                convert(true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -175,41 +181,96 @@ public class MainActivity extends AppCompatActivity {
         buttonHalf.setOnClickListener(fractionInputListener);
     }
 
+    private void convert(boolean forward) {
+        EditText fromEdit, toEdit;
+        Spinner fromSpinner, toSpinner;
+
+        if (forward) {
+            fromEdit = valEdit1;
+            toEdit = valEdit2;
+            fromSpinner = unitSpinner1;
+            toSpinner = unitSpinner2;
+        }
+        else {
+            fromEdit = valEdit2;
+            toEdit = valEdit1;
+            fromSpinner = unitSpinner2;
+            toSpinner = unitSpinner1;
+        }
+
+        Ingredient ingredient;
+        Unit fromUnit;
+        Unit toUnit;
+        double fromVal;
+        double toVal;
+
+        ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
+        fromUnit = (Unit) fromSpinner.getSelectedItem();
+        toUnit = (Unit) toSpinner.getSelectedItem();
+
+        String fromString = fromEdit.getText().toString();
+        fromVal = fromString.isEmpty() ? 0 : Double.parseDouble(fromString);
+
+        double baseVal = fromVal * fromUnit.toBase;
+        if (fromUnit.type != toUnit.type) {
+            if (fromUnit.type == UnitType.WEIGHT) {
+                baseVal /= ingredient.getBaseDensity();
+            } else {
+                baseVal *= ingredient.getBaseDensity();
+            }
+        }
+        toVal = toUnit.fromBase() * baseVal;
+
+        toEdit.setText(naturalFormat(toVal));
+    }
+
     private void insertNumber(Button button) {
-        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+        boolean forward = valEdit1.hasFocus();
+        EditText focused = forward ? valEdit1 : valEdit2;
 
         Editable field = focused.getText();
         field.append(button.getText());
+
+        convert(forward);
     }
 
     private void insertDot() {
-        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+        boolean forward = valEdit1.hasFocus();
+        EditText focused = forward ? valEdit1 : valEdit2;
 
         Editable field = focused.getText();
         if (!field.toString().contains("."))
             field.append(".");
+
+        convert(forward);
     }
 
     private void backspace() {
-        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+        boolean forward = valEdit1.hasFocus();
+        EditText focused = forward ? valEdit1 : valEdit2;
 
         Editable field = focused.getText();
         int length = field.length();
         if (length > 0) {
             field.delete(length - 1, length);
         }
+
+        convert(forward);
     }
 
     private void erase() {
-        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+        boolean forward = valEdit1.hasFocus();
+        EditText focused = forward ? valEdit1 : valEdit2;
 
         Editable field = focused.getText();
 
         field.clear();
+
+        convert(forward);
     }
 
     private void addFraction(Button button) {
-        EditText focused = toEdit.hasFocus() ? toEdit : fromEdit;
+        EditText focused = valEdit2.hasFocus() ? valEdit2 : valEdit1;
 
         String focusString = focused.getText().toString();
 
@@ -238,6 +299,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String naturalFormat(double d) {
+        if (d == 0)
+            return "";
+
         // Format with 2 decimal places
         String s = String.format("%.2f", d);
 
