@@ -18,11 +18,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
-    private DatabaseHelper dbHelper = null;
-
-    private Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
-    private Button buttonDot, buttonBackspace, buttonConvert;
-    private Button buttonQuarter, buttonThird, buttonHalf;
 
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
     private EditText valEdit1, valEdit2;
@@ -47,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DatabaseHelper dbHelper = null;
+
+        Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
+        Button buttonDot, buttonBackspace, buttonConvert;
+        Button buttonQuarter, buttonThird, buttonHalf;
 
         // Set up view elements
         button0 = (Button) findViewById(R.id.button_0);
