@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             return "";
 
         // Format with 2 decimal places
-        String s = String.format("%.2f", d);
+        String s = String.format(Locale.US, "%.2f", d);
 
         // Remove trailing zeros
         s = s.replaceAll("0*$", "");
