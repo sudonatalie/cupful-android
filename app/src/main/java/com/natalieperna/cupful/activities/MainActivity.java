@@ -273,9 +273,11 @@ public class MainActivity extends AppCompatActivity {
         toEdit.setText(naturalFormat(toVal));
     }
 
+    // TODO Listen for changes to EditText widgets rather than calling convert all over the place
+
     private void insertNumber(Button button) {
         Editable field = focused.getText();
-        field.append(button.getText());
+        field.append(button.getText()); // TODO There has to be a better way
 
         convert();
     }
