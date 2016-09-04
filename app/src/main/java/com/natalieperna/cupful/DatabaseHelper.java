@@ -20,7 +20,7 @@ import java.util.List;
 class DatabaseHelper extends SQLiteOpenHelper {
     private final static String TAG = "DatabaseHelper";
     private final Context context;
-    private String filePath;
+    private final String filePath;
 
     public DatabaseHelper(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
