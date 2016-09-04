@@ -290,7 +290,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFraction(Button button) {
-        EditText focused = valEdit2.hasFocus() ? valEdit2 : valEdit1;
+        boolean forward = valEdit1.hasFocus();
+        EditText focused = forward ? valEdit1 : valEdit2;
 
         String focusString = focused.getText().toString();
 
@@ -316,5 +317,7 @@ public class MainActivity extends AppCompatActivity {
 
         focused.setText(naturalFormat(val));
         focused.setSelection(focused.getText().length());
+
+        convert(forward);
     }
 }
