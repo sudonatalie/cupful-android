@@ -26,19 +26,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
         this.context = context;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
         String filesDir = context.getFilesDir().getAbsolutePath();
         filePath = filesDir + "/" + Config.DATABASE_NAME;
         prepareDatabase();
     }
 
     @Override
+    public void onCreate(SQLiteDatabase db) {
+        prepareDatabase();
+    }
+
+    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String filesDir = context.getFilesDir().getAbsolutePath();
-        filePath = filesDir + "/" + Config.DATABASE_NAME;
         prepareDatabase();
     }
 
