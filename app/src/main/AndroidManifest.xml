@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.natalieperna.cupful">
 
+    <!-- TODO
+    Replace icon or add attribution to an About dialog and Play Store page.
+    https://icons8.com/web-app/30002/tea-cup
+    !-->
     <application
         android:allowBackup="false"
         tools:replace="android:allowBackup"
