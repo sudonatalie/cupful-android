@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="8"
-    tools:context="com.natalieperna.cupful.MainActivity">
+    tools:context=".activities.MainActivity">
 
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/ingredient"

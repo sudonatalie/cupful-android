@@ -1,4 +1,4 @@
-package com.natalieperna.cupful;
+package com.natalieperna.cupful.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.natalieperna.cupful.R;
+import com.natalieperna.cupful.database.DatabaseHelper;
+import com.natalieperna.cupful.models.Ingredient;
+import com.natalieperna.cupful.models.Unit;
+import com.natalieperna.cupful.models.UnitType;
 
 import java.util.List;
 import java.util.Locale;
@@ -222,15 +228,15 @@ public class MainActivity extends AppCompatActivity {
         String fromString = fromEdit.getText().toString();
         fromVal = fromString.isEmpty() ? 0 : Double.parseDouble(fromString);
 
-        double baseVal = fromVal * fromUnit.toBase;
-        if (fromUnit.type != toUnit.type) {
-            if (fromUnit.type == UnitType.WEIGHT) {
+        double baseVal = fromVal * fromUnit.getToBase();
+        if (fromUnit.getType() != toUnit.getType()) {
+            if (fromUnit.getType() == UnitType.WEIGHT) {
                 baseVal /= ingredient.getBaseDensity();
             } else {
                 baseVal *= ingredient.getBaseDensity();
             }
         }
-        toVal = toUnit.fromBase() * baseVal;
+        toVal = toUnit.getFromBase() * baseVal;
 
         toEdit.setText(naturalFormat(toVal));
     }

@@ -1,4 +1,4 @@
-package com.natalieperna.cupful;
+package com.natalieperna.cupful.database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.natalieperna.cupful.core.Config;
+import com.natalieperna.cupful.models.Ingredient;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,7 +20,7 @@ import java.util.List;
 
 // Ref: http://www.concretepage.com/android/android-ship-sqlite-database-with-apk-copy-sqlite-database-from-assets-folder-to-data-example
 
-class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String TAG = "DatabaseHelper";
     private final Context context;
     private final String filePath;

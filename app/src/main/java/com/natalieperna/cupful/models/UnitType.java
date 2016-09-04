@@ -1,4 +1,4 @@
-package com.natalieperna.cupful;
+package com.natalieperna.cupful.models;
 
 public enum UnitType {
     WEIGHT, VOLUME
