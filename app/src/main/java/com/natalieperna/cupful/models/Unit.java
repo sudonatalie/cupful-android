@@ -3,12 +3,16 @@ package com.natalieperna.cupful.models;
 // TODO Look at how other unit converter Java apps organize classes because this is bad
 public class Unit {
 
+    public enum Type {
+        WEIGHT, VOLUME
+    }
+
     private final String name;
     // Some terrible programming practices at work
-    private final UnitType type;
+    private final Type type;
     private final double toBase; // multiplier for to OZ (for weights) or to CUPS (for volumes)
 
-    public Unit(String name, UnitType type, double toBase) {
+    public Unit(String name, Type type, double toBase) {
         this.toBase = toBase;
         this.name = name;
         this.type = type;
@@ -18,7 +22,7 @@ public class Unit {
         return name;
     }
 
-    public UnitType getType() {
+    public Type getType() {
         return type;
     }
 

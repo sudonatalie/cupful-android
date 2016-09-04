@@ -15,7 +15,6 @@ import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.database.DatabaseHelper;
 import com.natalieperna.cupful.models.Ingredient;
 import com.natalieperna.cupful.models.Unit;
-import com.natalieperna.cupful.models.UnitType;
 
 import java.util.List;
 import java.util.Locale;
@@ -89,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
         // Units available for conversion
         // TODO Store units in database
         Unit[] units = {
-                new Unit("oz", UnitType.WEIGHT, 28.3495),
-                new Unit("cups", UnitType.VOLUME, 1),
-                new Unit("grams", UnitType.WEIGHT, 1),
-                new Unit("tsp", UnitType.VOLUME, 0.0208333)
+                new Unit("oz", Unit.Type.WEIGHT, 28.3495),
+                new Unit("cups", Unit.Type.VOLUME, 1),
+                new Unit("grams", Unit.Type.WEIGHT, 1),
+                new Unit("tsp", Unit.Type.VOLUME, 0.0208333)
         };
 
         // Setup database
@@ -230,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 
         double baseVal = fromVal * fromUnit.getToBase();
         if (fromUnit.getType() != toUnit.getType()) {
-            if (fromUnit.getType() == UnitType.WEIGHT) {
+            if (fromUnit.getType() == Unit.Type.WEIGHT) {
                 baseVal /= ingredient.getBaseDensity();
             } else {
                 baseVal *= ingredient.getBaseDensity();
