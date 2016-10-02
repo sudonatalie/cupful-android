@@ -264,6 +264,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Get from value
         String fromString = fromEdit.getText().toString();
+        // Prepend a 0 in case user submitted value beginning with decimal point
+        fromString = "0" + fromString;
         fromVal = fromString.isEmpty() ? 0 : Double.parseDouble(fromString);
 
         // Convert to new value
