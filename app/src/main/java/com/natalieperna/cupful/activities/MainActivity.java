@@ -144,31 +144,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Auto-update (convert) on changing units
+        // Auto-update (convert) on changing ingredient/units
+        AdapterView.OnItemSelectedListener spinnerInputListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                convert();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+        ingredientSpinner.setOnItemSelectedListener(spinnerInputListener);
+
         // Whichever unit is changed, always change the second row's value accordingly
-        unitSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                convert();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        unitSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                convert();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        unitSpinner1.setOnItemSelectedListener(spinnerInputListener);
+        unitSpinner2.setOnItemSelectedListener(spinnerInputListener);
 
         // Set up number input buttons
         // Auto-update (convert) on changing values
