@@ -25,10 +25,11 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
         String[] sqlSelect = {"id", "name", "gPerCup"};
         String sqlTables = "ingredient";
+        String sortOrder = "name";
 
         qb.setTables(sqlTables);
         Cursor c = qb.query(db, sqlSelect, null, null,
-                null, null, null);
+                null, null, sortOrder);
 
         c.moveToFirst();
 
