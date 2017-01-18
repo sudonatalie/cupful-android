@@ -24,3 +24,9 @@ WHERE WEIGHT.Msre_Desc = "tsp";
 
 -- Delete ingredients containing (capitalized) brand names
 DELETE FROM ingredient WHERE name REGEXP '.*[A-Z][A-Z].*';
+
+-- Delete all but first of duplicates (by name)
+DELETE FROM ingredient WHERE id NOT IN
+(SELECT * FROM
+	(SELECT MIN(id) FROM ingredient group by name)
+)
