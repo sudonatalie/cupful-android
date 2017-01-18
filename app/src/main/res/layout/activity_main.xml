@@ -81,9 +81,9 @@
                 android:text="@string/nine" />
 
             <Button
-                android:id="@+id/button_quarter"
+                android:id="@+id/clear"
                 style="@style/InputButtons"
-                android:text="@string/quarter" />
+                android:text="@string/clear" />
         </TableRow>
 
         <TableRow android:layout_weight="1">
@@ -104,9 +104,9 @@
                 android:text="@string/six" />
 
             <Button
-                android:id="@+id/button_third"
+                android:id="@+id/button_half"
                 style="@style/InputButtons"
-                android:text="@string/third" />
+                android:text="@string/half" />
         </TableRow>
 
         <TableRow android:layout_weight="1">
@@ -127,9 +127,9 @@
                 android:text="@string/three" />
 
             <Button
-                android:id="@+id/button_half"
+                android:id="@+id/button_third"
                 style="@style/InputButtons"
-                android:text="@string/half" />
+                android:text="@string/third" />
         </TableRow>
 
         <TableRow android:layout_weight="1">
@@ -150,9 +150,9 @@
                 android:text="@string/backspace" />
 
             <Button
-                android:id="@+id/convert"
+                android:id="@+id/button_quarter"
                 style="@style/InputButtons"
-                android:text="@string/equals" />
+                android:text="@string/quarter" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

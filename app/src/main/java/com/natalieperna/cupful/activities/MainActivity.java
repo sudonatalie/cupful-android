@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Button widgets
         Button button0, button1, button2, button3, button4,
                 button5, button6, button7, button8, button9;
-        Button buttonDot, buttonBackspace, buttonConvert;
+        Button buttonDot, buttonBackspace, buttonClear;
         Button buttonQuarter, buttonThird, buttonHalf;
 
         // Set up view widgets
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonDot = (Button) findViewById(R.id.button_dot);
         buttonBackspace = (Button) findViewById(R.id.button_back);
-        buttonConvert = (Button) findViewById(R.id.convert);
+        buttonClear = (Button) findViewById(R.id.clear);
 
         buttonQuarter = (Button) findViewById(R.id.button_quarter);
         buttonThird = (Button) findViewById(R.id.button_third);
@@ -135,12 +135,12 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner1.setAdapter(unitAdapter);
         unitSpinner2.setAdapter(unitAdapter);
 
-        // Setup convert button
+        // Setup clear button
         // TODO Remove, no longer necessary
-        buttonConvert.setOnClickListener(new View.OnClickListener() {
+        buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                convert();
+                clear();
             }
         });
 
@@ -266,6 +266,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Display new value
         toEdit.setText(naturalFormat(toVal));
+    }
+
+    private void clear() {
+        valEdit1.getText().clear();
+        valEdit2.getText().clear();
     }
 
     // TODO Listen for changes to EditText widgets rather than calling convert all over the place
