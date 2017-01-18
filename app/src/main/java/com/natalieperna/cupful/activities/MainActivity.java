@@ -279,7 +279,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void insertDot() {
         Editable field = focused.getText();
-        if (!field.toString().contains("."))
+        // If empty, insert 0.
+        if (field.toString().isEmpty())
+            field.append("0.");
+        // Don't insert superfluous decimal places
+        else if (!field.toString().contains("."))
             field.append(".");
 
         convert();
