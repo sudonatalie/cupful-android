@@ -21,3 +21,6 @@ INSERT INTO ingredient (NDB_No, name, gPerCup)
 SELECT FOOD_DES.NDB_No, FOOD_DES.Long_Desc, WEIGHT.Gm_Wgt / WEIGHT.Amount * 48.0
 FROM FOOD_DES INNER JOIN WEIGHT ON FOOD_DES.NDB_No = WEIGHT.NDB_No
 WHERE WEIGHT.Msre_Desc = "tsp";
+
+-- Delete ingredients containing (capitalized) brand names
+DELETE FROM ingredient WHERE name REGEXP '.*[A-Z][A-Z].*';
