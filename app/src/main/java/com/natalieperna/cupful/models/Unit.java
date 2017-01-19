@@ -41,12 +41,12 @@ public class Unit {
             new Unit("quart (UK)", Unit.Type.VOLUME, 4.803799702),
             new Unit("quart (US, dry)", Unit.Type.VOLUME, 4.6545887754),
             new Unit("quart (US, liquid)", Unit.Type.VOLUME, 4),
-            new Unit("Tablespoon (metric)", Unit.Type.VOLUME, 0.063401292566),
-            new Unit("Tablespoon (UK)", Unit.Type.VOLUME, 0.060047496275),
-            new Unit("Tablespoon (US)", Unit.Type.VOLUME, 0.0625),
-            new Unit("Teaspoon (metric)", Unit.Type.VOLUME, 0.021133764189),
-            new Unit("Teaspoon (UK)", Unit.Type.VOLUME, 0.015011874069),
-            new Unit("Teaspoon (US)", Unit.Type.VOLUME, 0.020833333334)
+            new Unit("tablespoon (metric)", Unit.Type.VOLUME, 0.063401292566),
+            new Unit("tablespoon (UK)", Unit.Type.VOLUME, 0.060047496275),
+            new Unit("tablespoon (US)", Unit.Type.VOLUME, 0.0625),
+            new Unit("teaspoon (metric)", Unit.Type.VOLUME, 0.021133764189),
+            new Unit("teaspoon (UK)", Unit.Type.VOLUME, 0.015011874069),
+            new Unit("teaspoon (US)", Unit.Type.VOLUME, 0.020833333334)
     };
 
     public String getName() {
