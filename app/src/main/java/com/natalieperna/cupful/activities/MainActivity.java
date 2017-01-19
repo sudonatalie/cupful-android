@@ -137,11 +137,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Set initial values
         // TODO Avoid hard-coding
-        ingredientSpinner.setSelection(191); // Flour, white, all-purpose
+        ingredientSpinner.setSelection(191); // Flour, all-purpose
         unitSpinner1.setSelection(4); // "cup (US)"
         unitSpinner2.setSelection(0); // "gram"
-        valEdit1.getText().append("1");
-        convert();
 
         // Setup clear button
         // TODO Remove, no longer necessary
