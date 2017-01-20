@@ -124,14 +124,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Show ingredients in spinner
         List<Ingredient> ingredients = dbHelper.getIngredients();
-        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ingredients);
-        ingredientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, ingredients);
+        ingredientAdapter.setDropDownViewResource(R.layout.spinner_layout);
         ingredientSpinner.setAdapter(ingredientAdapter);
 
         // Show units in spinners
         Unit[] units = Unit.getUnits();
-        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
+        unitAdapter.setDropDownViewResource(R.layout.spinner_layout);
         unitSpinner1.setAdapter(unitAdapter);
         unitSpinner2.setAdapter(unitAdapter);
 

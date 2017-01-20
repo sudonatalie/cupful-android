@@ -3,17 +3,22 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
 
     <!-- Input button styling -->
     <style name="InputButtons">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@color/colorIcons</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/icons</item>
+        <item name="android:textSize">@dimen/buttonTextSize</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="SpinnerItem" parent="@style/Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">@dimen/fontSize</item>
     </style>
 </resources>

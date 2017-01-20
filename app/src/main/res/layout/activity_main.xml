@@ -11,20 +11,23 @@
         android:id="@+id/ingredient"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_margin="@dimen/margin" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:padding="@dimen/margin">
 
         <EditText
             android:id="@+id/value1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="@dimen/fontSize"
             android:inputType="numberDecimal" />
 
         <Spinner
@@ -39,13 +42,15 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:padding="@dimen/margin">
 
         <EditText
             android:id="@+id/value2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="@dimen/fontSize"
             android:inputType="numberDecimal" />
 
         <Spinner
@@ -59,9 +64,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:background="@color/colorPrimary"
+        android:background="@color/primary"
         android:stretchColumns="*"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:layout_marginTop="20dp">
 
         <TableRow android:layout_weight="1">
 
