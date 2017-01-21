@@ -99,10 +99,10 @@
                 style="@style/InputButtons"
                 android:text="@string/nine" />
 
-            <Button
-                android:id="@+id/clear"
+            <ImageButton
+                android:id="@+id/swap"
                 style="@style/InputButtons"
-                android:text="@string/clear" />
+                android:src="@drawable/ic_swap_vert_white"/>
         </TableRow>
 
         <TableRow android:layout_weight="1">

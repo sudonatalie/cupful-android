@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         // Button widgets
         Button button0, button1, button2, button3, button4,
                 button5, button6, button7, button8, button9;
-        Button buttonDot, buttonBackspace, buttonClear;
+        Button buttonDot, buttonBackspace;
+        ImageButton buttonSwap;
         Button buttonQuarter, buttonThird, buttonHalf;
 
         // Set up view widgets
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonDot = (Button) findViewById(R.id.button_dot);
         buttonBackspace = (Button) findViewById(R.id.button_back);
-        buttonClear = (Button) findViewById(R.id.clear);
+        buttonSwap = (ImageButton) findViewById(R.id.swap);
 
         buttonQuarter = (Button) findViewById(R.id.button_quarter);
         buttonThird = (Button) findViewById(R.id.button_third);
@@ -106,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner1.setSelection(4); // "cup (US)"
         unitSpinner2.setSelection(0); // "gram"
 
-        // Setup clear button
-        buttonClear.setOnClickListener(new View.OnClickListener() {
+        // Setup swap button
+        buttonSwap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clear();
+                swapInputOutput();
             }
         });
 
@@ -228,9 +230,14 @@ public class MainActivity extends AppCompatActivity {
         toEdit.setText(naturalFormat(toVal));
     }
 
-    private void clear() {
-        inputView.setText("");
-        outputView.setText("");
+    private void swapInputOutput() {
+        CharSequence tmpVal = inputView.getText();
+        inputView.setText(outputView.getText());
+        outputView.setText(tmpVal);
+
+        int tmpUnit = unitSpinner1.getSelectedItemPosition();
+        unitSpinner1.setSelection(unitSpinner2.getSelectedItemPosition());
+        unitSpinner2.setSelection(tmpUnit);
     }
 
     // TODO Listen for changes to EditText widgets rather than calling convert all over the place
