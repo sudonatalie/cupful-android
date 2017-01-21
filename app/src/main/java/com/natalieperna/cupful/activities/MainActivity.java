@@ -3,13 +3,12 @@ package com.natalieperna.cupful.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.database.DatabaseHelper;
@@ -22,15 +21,9 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
 
-    // Spinner and EditText widgets
+    // Spinner and TextView widgets
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
-    private EditText valEdit1, valEdit2;
-
-    // Last focused value edit widget
-    EditText focused = valEdit1;
-
-    // Conversion direction
-    boolean forward = true;
+    private TextView inputView, outputView;
 
     private static String naturalFormat(double d) {
         if (d == 0)
@@ -69,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner1 = (Spinner) findViewById(R.id.unit1);
         unitSpinner2 = (Spinner) findViewById(R.id.unit2);
 
-        valEdit1 = (EditText) findViewById(R.id.value1);
-        valEdit2 = (EditText) findViewById(R.id.value2);
+        inputView = (TextView) findViewById(R.id.value1);
+        outputView = (TextView) findViewById(R.id.value2);
 
         button0 = (Button) findViewById(R.id.button_0);
         button1 = (Button) findViewById(R.id.button_1);
@@ -90,34 +83,6 @@ public class MainActivity extends AppCompatActivity {
         buttonQuarter = (Button) findViewById(R.id.button_quarter);
         buttonThird = (Button) findViewById(R.id.button_third);
         buttonHalf = (Button) findViewById(R.id.button_half);
-
-        // Disallow input with keyboard for numerical fields,
-        // in favour of on-screen input buttons
-        valEdit1.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        valEdit2.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        valEdit1.setTextIsSelectable(true);
-        valEdit2.setTextIsSelectable(true);
-
-        // Keep current focus and direction updated with listeners
-        valEdit1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    focused = valEdit1;
-                    // TODO Isn't there a keyword like `this` that could replace valEdit2 here?
-                    forward = true;
-                }
-            }
-        });
-        valEdit2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    focused = valEdit2;
-                    forward = false;
-                }
-            }
-        });
 
         // Setup database
         dbHelper = new DatabaseHelper(this);
@@ -142,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner2.setSelection(0); // "gram"
 
         // Setup clear button
-        // TODO Remove, no longer necessary
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner2.setOnItemSelectedListener(spinnerInputListener);
 
         // Set up number input buttons
-        // Auto-update (convert) on changing values
-        // Whichever value is changed, the other value changes accordingly
+        // Auto-update (convert) on changing input
         View.OnClickListener numberInputListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Set up backspace buttons
-        // Click erases last character of focused widget
+        // Click erases last character of inputView widget
         buttonBackspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Long click erases entire focused widget
+        // Long click erases entire inputView widget
         buttonBackspace.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -231,23 +194,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void convert() {
         // To/from value and spinner widgets
-        EditText fromEdit, toEdit;
+        TextView fromEdit, toEdit;
         Spinner fromSpinner, toSpinner;
 
-        // Use forward parameter to determine "direction" of conversion
-        // Forward => update lower value based on upper
-        // Backward => update upper value based on lower (when lower value is the widget changing)
-        if (forward) {
-            fromEdit = valEdit1;
-            toEdit = valEdit2;
-            fromSpinner = unitSpinner1;
-            toSpinner = unitSpinner2;
-        } else {
-            fromEdit = valEdit2;
-            toEdit = valEdit1;
-            fromSpinner = unitSpinner2;
-            toSpinner = unitSpinner1;
-        }
+        // TODO Cleanup unnecessary vars
+        fromEdit = inputView;
+        toEdit = outputView;
+        fromSpinner = unitSpinner1;
+        toSpinner = unitSpinner2;
 
         // Get values from widgets
         Ingredient ingredient;
@@ -275,21 +229,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clear() {
-        valEdit1.getText().clear();
-        valEdit2.getText().clear();
+        inputView.setText("");
+        outputView.setText("");
     }
 
     // TODO Listen for changes to EditText widgets rather than calling convert all over the place
 
     private void insertNumber(Button button) {
-        Editable field = focused.getText();
+        Editable field = inputView.getEditableText();
         field.append(button.getText()); // TODO There has to be a better way
 
         convert();
     }
 
     private void insertDot() {
-        Editable field = focused.getText();
+        Editable field = inputView.getEditableText();
         // If empty, insert 0.
         if (field.toString().isEmpty())
             field.append("0.");
@@ -301,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void backspace() {
-        Editable field = focused.getText();
+        Editable field = inputView.getEditableText();
         int length = field.length();
         if (length > 0) {
             field.delete(length - 1, length);
@@ -311,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void erase() {
-        Editable field = focused.getText();
+        Editable field = inputView.getEditableText();
 
         field.clear();
 
@@ -319,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFraction(View view) {
-        String focusString = focused.getText().toString();
+        String focusString = inputView.getText().toString();
 
         double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
 
@@ -341,8 +295,7 @@ public class MainActivity extends AppCompatActivity {
             val = Math.round(val);
         }
 
-        focused.setText(naturalFormat(val));
-        focused.setSelection(focused.getText().length());
+        inputView.setText(naturalFormat(val));
 
         convert();
     }
