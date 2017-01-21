@@ -243,41 +243,40 @@ public class MainActivity extends AppCompatActivity {
     // TODO Listen for changes to EditText widgets rather than calling convert all over the place
 
     private void insertNumber(Button button) {
-        Editable field = inputView.getEditableText();
+        String field = inputView.getText().toString();
         if (field.length() < 10)
-            field.append(button.getText()); // TODO There has to be a better way
+            inputView   .append(button.getText()); // TODO There has to be a better way
 
         convert();
     }
 
     private void insertDot() {
-        Editable field = inputView.getEditableText();
+        String field = inputView.getText().toString();
         // If empty, insert 0.
-        if (field.toString().isEmpty())
-            field.append("0.");
+        if (field.isEmpty())
+            inputView.append("0.");
         // Don't insert superfluous decimal places
-        else if (!field.toString().contains("."))
-            field.append(".");
+        else if (!field.contains("."))
+            inputView.append(".");
 
         convert();
     }
 
     private void backspace() {
         Editable field = inputView.getEditableText();
-        int length = field.length();
-        if (length > 0) {
-            field.delete(length - 1, length);
+        if (field != null) {
+            int length = field.length();
+            if (length > 0) {
+                field.delete(length - 1, length);
+            }
         }
 
         convert();
     }
 
     private void erase() {
-        Editable field = inputView.getEditableText();
-
-        field.clear();
-
-        convert();
+        inputView.setText("");
+        outputView.setText("");
     }
 
     private void addFraction(View view) {
