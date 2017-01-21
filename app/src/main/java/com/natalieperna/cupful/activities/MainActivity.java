@@ -237,7 +237,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void insertNumber(Button button) {
         Editable field = inputView.getEditableText();
-        field.append(button.getText()); // TODO There has to be a better way
+        if (field.length() < 10)
+            field.append(button.getText()); // TODO There has to be a better way
 
         convert();
     }
