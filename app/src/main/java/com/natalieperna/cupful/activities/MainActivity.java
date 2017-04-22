@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         // Button widgets
         Button button0, button1, button2, button3, button4,
                 button5, button6, button7, button8, button9;
-        Button buttonDot, buttonBackspace;
-        ImageButton buttonSwap;
+        Button buttonDot;
+        ImageButton buttonSwap, buttonBackspace;
         Button buttonQuarter, buttonThird, buttonHalf;
 
         // Set up view widgets
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         button9 = (Button) findViewById(R.id.button_9);
 
         buttonDot = (Button) findViewById(R.id.button_dot);
-        buttonBackspace = (Button) findViewById(R.id.button_back);
+        buttonBackspace = (ImageButton) findViewById(R.id.button_back);
         buttonSwap = (ImageButton) findViewById(R.id.swap);
 
         buttonQuarter = (Button) findViewById(R.id.button_quarter);

@@ -100,7 +100,8 @@
             <ImageButton
                 android:id="@+id/swap"
                 style="@style/InputButtons"
-                android:src="@drawable/ic_swap_vert_white"/>
+                android:cropToPadding="false"
+                android:src="@drawable/ic_swap_vert_white" />
         </TableRow>
 
         <TableRow android:layout_weight="1">
@@ -161,10 +162,10 @@
                 style="@style/InputButtons"
                 android:text="@string/zero" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_back"
                 style="@style/InputButtons"
-                android:text="@string/backspace" />
+                android:src="@drawable/ic_backspace_white"/>
 
             <Button
                 android:id="@+id/button_quarter"
