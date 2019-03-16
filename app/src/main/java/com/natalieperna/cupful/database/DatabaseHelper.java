@@ -36,7 +36,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         List<Ingredient> list = new ArrayList<>();
         while (c.moveToNext()) {
             Ingredient ingredient = new Ingredient(
-                    c.getInt(0),
                     c.getString(1),
                     c.getInt(2)
             );

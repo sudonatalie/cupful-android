@@ -17,7 +17,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider"/>
+        android:background="@color/divider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,11 +30,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="@dimen/fontSize"
             android:gravity="center_vertical"
-            android:textColor="@color/primaryText"
+            android:paddingStart="@dimen/margin"
             android:paddingLeft="@dimen/margin"
-            android:paddingStart="@dimen/margin" />
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/fontSize" />
 
         <Spinner
             android:id="@+id/unit1"
@@ -46,7 +46,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider"/>
+        android:background="@color/divider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,11 +59,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="@dimen/fontSize"
             android:gravity="center_vertical"
-            android:textColor="@color/primaryText"
+            android:paddingStart="@dimen/margin"
             android:paddingLeft="@dimen/margin"
-            android:paddingStart="@dimen/margin" />
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/fontSize" />
 
         <Spinner
             android:id="@+id/unit2"
@@ -165,7 +165,7 @@
             <ImageButton
                 android:id="@+id/button_back"
                 style="@style/InputButtons"
-                android:src="@drawable/ic_backspace_white"/>
+                android:src="@drawable/ic_backspace_white" />
 
             <Button
                 android:id="@+id/button_quarter"

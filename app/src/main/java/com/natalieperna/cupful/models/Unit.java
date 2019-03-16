@@ -13,13 +13,13 @@ public class Unit {
     private final double toBase; // multiplier for to OZ (for weights) or to CUPS (for volumes)
 
     // Units available for conversion
-    public Unit(String name, Type type, double toBase) {
+    private Unit(String name, Type type, double toBase) {
         this.toBase = toBase;
         this.name = name;
         this.type = type;
     }
 
-    private static Unit[] units = {
+    private static final Unit[] units = {
             new Unit("gram", Unit.Type.WEIGHT, 1),
             new Unit("kilogram", Unit.Type.WEIGHT, 1000),
             new Unit("pound (lb)", Unit.Type.WEIGHT, 453.59237),
@@ -46,10 +46,6 @@ public class Unit {
             new Unit("teaspoon (UK)", Unit.Type.VOLUME, 0.015011874069),
             new Unit("teaspoon (US)", Unit.Type.VOLUME, 0.020833333334)
     };
-
-    public String getName() {
-        return name;
-    }
 
     public Type getType() {
         return type;

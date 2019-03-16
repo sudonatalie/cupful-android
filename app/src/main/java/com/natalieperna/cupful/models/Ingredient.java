@@ -1,18 +1,12 @@
 package com.natalieperna.cupful.models;
 
 public class Ingredient {
-    private final int id;
     private final String name;
     private final double baseDensity;
 
-    public Ingredient(int id, String name, double baseDensity) {
-        this.id = id;
+    public Ingredient(String name, double baseDensity) {
         this.name = name;
         this.baseDensity = baseDensity;
-    }
-
-    public String getName() {
-        return name;
     }
 
     // TODO Optimize

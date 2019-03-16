@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String TAG = "MainActivity";
 
     // Spinner and TextView widgets
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
@@ -60,31 +59,31 @@ public class MainActivity extends AppCompatActivity {
         Button buttonQuarter, buttonThird, buttonHalf;
 
         // Set up view widgets
-        ingredientSpinner = (Spinner) findViewById(R.id.ingredient);
-        unitSpinner1 = (Spinner) findViewById(R.id.unit1);
-        unitSpinner2 = (Spinner) findViewById(R.id.unit2);
+        ingredientSpinner = findViewById(R.id.ingredient);
+        unitSpinner1 = findViewById(R.id.unit1);
+        unitSpinner2 = findViewById(R.id.unit2);
 
-        inputView = (TextView) findViewById(R.id.value1);
-        outputView = (TextView) findViewById(R.id.value2);
+        inputView = findViewById(R.id.value1);
+        outputView = findViewById(R.id.value2);
 
-        button0 = (Button) findViewById(R.id.button_0);
-        button1 = (Button) findViewById(R.id.button_1);
-        button2 = (Button) findViewById(R.id.button_2);
-        button3 = (Button) findViewById(R.id.button_3);
-        button4 = (Button) findViewById(R.id.button_4);
-        button5 = (Button) findViewById(R.id.button_5);
-        button6 = (Button) findViewById(R.id.button_6);
-        button7 = (Button) findViewById(R.id.button_7);
-        button8 = (Button) findViewById(R.id.button_8);
-        button9 = (Button) findViewById(R.id.button_9);
+        button0 = findViewById(R.id.button_0);
+        button1 = findViewById(R.id.button_1);
+        button2 = findViewById(R.id.button_2);
+        button3 = findViewById(R.id.button_3);
+        button4 = findViewById(R.id.button_4);
+        button5 = findViewById(R.id.button_5);
+        button6 = findViewById(R.id.button_6);
+        button7 = findViewById(R.id.button_7);
+        button8 = findViewById(R.id.button_8);
+        button9 = findViewById(R.id.button_9);
 
-        buttonDot = (Button) findViewById(R.id.button_dot);
-        buttonBackspace = (ImageButton) findViewById(R.id.button_back);
-        buttonSwap = (ImageButton) findViewById(R.id.swap);
+        buttonDot = findViewById(R.id.button_dot);
+        buttonBackspace = findViewById(R.id.button_back);
+        buttonSwap = findViewById(R.id.swap);
 
-        buttonQuarter = (Button) findViewById(R.id.button_quarter);
-        buttonThird = (Button) findViewById(R.id.button_third);
-        buttonHalf = (Button) findViewById(R.id.button_half);
+        buttonQuarter = findViewById(R.id.button_quarter);
+        buttonThird = findViewById(R.id.button_third);
+        buttonHalf = findViewById(R.id.button_half);
 
         // Setup database
         dbHelper = new DatabaseHelper(this);
