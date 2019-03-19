@@ -20,8 +20,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+    implementation('org.jscience:jscience:4.3.1') {
+        exclude group: "org.javolution"
+    }
 }

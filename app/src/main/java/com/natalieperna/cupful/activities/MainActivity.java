@@ -1,9 +1,6 @@
 package com.natalieperna.cupful.activities;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,11 +12,22 @@ import android.widget.TextView;
 
 import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.database.DatabaseHelper;
+import com.natalieperna.cupful.models.DisplayUnit;
 import com.natalieperna.cupful.models.Ingredient;
-import com.natalieperna.cupful.models.Unit;
+import com.natalieperna.cupful.models.Kitchen;
+
+import org.jscience.physics.amount.Amount;
 
 import java.util.List;
 import java.util.Locale;
+
+import javax.measure.quantity.Mass;
+import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,34 +105,25 @@ public class MainActivity extends AppCompatActivity {
         ingredientSpinner.setAdapter(ingredientAdapter);
 
         // Show units in spinners
-        Unit[] units = new Unit[]{
-                new Unit("gram", Unit.Type.WEIGHT, 1),
-                new Unit("kilogram", Unit.Type.WEIGHT, 1000),
-                new Unit("pound (lb)", Unit.Type.WEIGHT, 453.59237),
-                new Unit("ounce", Unit.Type.WEIGHT, 28.349523125),
+        DisplayUnit[] units = {
+                new DisplayUnit(SI.GRAM, "g"),
+                new DisplayUnit(SI.KILOGRAM, "kg"),
+                new DisplayUnit(NonSI.POUND, "lb"),
+                new DisplayUnit(NonSI.OUNCE, "oz"),
 
-                // TODO Better way to organize US/UK
-                new Unit("cup (US)", Unit.Type.VOLUME, 1),
-                new Unit("cup (UK)", Unit.Type.VOLUME, 1.0566882094),
-                new Unit("gallon (UK)", Unit.Type.VOLUME, 19.215198808),
-                new Unit("gallon (US, dry)", Unit.Type.VOLUME, 18.618355102),
-                new Unit("gallon (US, liquid)", Unit.Type.VOLUME, 16),
-                new Unit("liter", Unit.Type.VOLUME, 4.2267528377),
-                new Unit("milliliter", Unit.Type.VOLUME, 0.0042267528377),
-                new Unit("fluid ounce (UK)", Unit.Type.VOLUME, 0.12009499255),
-                new Unit("fluid ounce (US)", Unit.Type.VOLUME, 0.125),
-                new Unit("pint (UK)", Unit.Type.VOLUME, 2.401899851),
-                new Unit("pint (US, dry)", Unit.Type.VOLUME, 2.3272943877),
-                new Unit("pint (US, liquid)", Unit.Type.VOLUME, 2),
-                new Unit("quart (UK)", Unit.Type.VOLUME, 4.803799702),
-                new Unit("quart (US, dry)", Unit.Type.VOLUME, 4.6545887754),
-                new Unit("quart (US, liquid)", Unit.Type.VOLUME, 4),
-                new Unit("tablespoon (UK)", Unit.Type.VOLUME, 0.060047496275),
-                new Unit("tablespoon (US)", Unit.Type.VOLUME, 0.0625),
-                new Unit("teaspoon (UK)", Unit.Type.VOLUME, 0.015011874069),
-                new Unit("teaspoon (US)", Unit.Type.VOLUME, 0.020833333334)
+                new DisplayUnit(Kitchen.CUP_US, "cup (US)"),
+                new DisplayUnit(Kitchen.CUP_UK, "cup (UK)"),
+                new DisplayUnit(NonSI.LITER, "L"),
+                new DisplayUnit(SI.MILLI(NonSI.LITER), "mL"),
+                new DisplayUnit(NonSI.OUNCE_LIQUID_US, "fl oz (US)"),
+                new DisplayUnit(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
+                new DisplayUnit(Kitchen.TABLESPOON_US, "tbsp (US)"),
+                new DisplayUnit(Kitchen.TABLESPOON_UK, "tbsp (UK)"),
+                new DisplayUnit(Kitchen.TEASPOON_US, "tsp (US)"),
+                new DisplayUnit(Kitchen.TEASPOON_UK, "tsp (UK)"),
         };
-        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
+
+        ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
         unitAdapter.setDropDownViewResource(R.layout.spinner_layout);
         unitSpinner1.setAdapter(unitAdapter);
         unitSpinner2.setAdapter(unitAdapter);
@@ -241,8 +240,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Get ingredients and units
         ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
-        fromUnit = (Unit) fromSpinner.getSelectedItem();
-        toUnit = (Unit) toSpinner.getSelectedItem();
+        fromUnit = ((DisplayUnit) fromSpinner.getSelectedItem()).getUnit();
+        toUnit = ((DisplayUnit) toSpinner.getSelectedItem()).getUnit();
 
         // Get from value
         String fromString = fromEdit.getText().toString();
@@ -251,7 +250,21 @@ public class MainActivity extends AppCompatActivity {
         fromVal = fromString.isEmpty() ? 0 : Double.parseDouble(fromString);
 
         // Convert to new value
-        toVal = ingredient.convert(fromVal, fromUnit, toUnit);
+        Amount from = Amount.valueOf(fromVal, fromUnit);
+        Amount to;
+        if (fromUnit.isCompatible(toUnit))
+            to = from.to(toUnit);
+        else {
+            // Mass -> Volume
+            if (fromUnit.isCompatible(Mass.UNIT)) {
+                to = from.divide(ingredient.getDensity()).to(toUnit);
+            }
+            // Volume -> Mass
+            else {
+                to = from.times(ingredient.getDensity()).to(toUnit);
+            }
+        }
+        toVal = to.getEstimatedValue();
 
         // Display new value
         toEdit.setText(naturalFormat(toVal));

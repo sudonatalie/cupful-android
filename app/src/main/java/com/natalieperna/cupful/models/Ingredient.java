@@ -1,31 +1,20 @@
 package com.natalieperna.cupful.models;
 
+import org.jscience.physics.amount.Amount;
+
+import javax.measure.quantity.VolumetricDensity;
+
 public class Ingredient {
     private final String name;
-    private final double baseDensity;
+    private final Amount<VolumetricDensity> density;
 
     public Ingredient(String name, double baseDensity) {
         this.name = name;
-        this.baseDensity = baseDensity;
+        this.density = Amount.valueOf(baseDensity, Kitchen.G_PER_CUP);
     }
 
-    // TODO Optimize
-    public double convert(double val, Unit from, Unit to) {
-        // Convert input value to base unit
-        double baseVal = val * from.getToBase();
-
-        // If converting from weight->volume or vice versa,
-        // convert to base unit of other type
-        if (from.getType() != to.getType()) {
-            if (from.getType() == Unit.Type.VOLUME) {
-                baseVal *= this.baseDensity;
-            } else {
-                baseVal /= this.baseDensity;
-            }
-        }
-
-        // Convert base value to goal unit
-        return to.getFromBase() * baseVal;
+    public Amount<VolumetricDensity> getDensity() {
+        return density;
     }
 
     @Override
