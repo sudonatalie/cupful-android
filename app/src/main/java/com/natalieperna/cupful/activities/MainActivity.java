@@ -1,7 +1,9 @@
 package com.natalieperna.cupful.activities;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
@@ -95,7 +97,33 @@ public class MainActivity extends AppCompatActivity {
         ingredientSpinner.setAdapter(ingredientAdapter);
 
         // Show units in spinners
-        Unit[] units = Unit.getUnits();
+        Unit[] units = new Unit[]{
+                new Unit("gram", Unit.Type.WEIGHT, 1),
+                new Unit("kilogram", Unit.Type.WEIGHT, 1000),
+                new Unit("pound (lb)", Unit.Type.WEIGHT, 453.59237),
+                new Unit("ounce", Unit.Type.WEIGHT, 28.349523125),
+
+                // TODO Better way to organize US/UK
+                new Unit("cup (US)", Unit.Type.VOLUME, 1),
+                new Unit("cup (UK)", Unit.Type.VOLUME, 1.0566882094),
+                new Unit("gallon (UK)", Unit.Type.VOLUME, 19.215198808),
+                new Unit("gallon (US, dry)", Unit.Type.VOLUME, 18.618355102),
+                new Unit("gallon (US, liquid)", Unit.Type.VOLUME, 16),
+                new Unit("liter", Unit.Type.VOLUME, 4.2267528377),
+                new Unit("milliliter", Unit.Type.VOLUME, 0.0042267528377),
+                new Unit("fluid ounce (UK)", Unit.Type.VOLUME, 0.12009499255),
+                new Unit("fluid ounce (US)", Unit.Type.VOLUME, 0.125),
+                new Unit("pint (UK)", Unit.Type.VOLUME, 2.401899851),
+                new Unit("pint (US, dry)", Unit.Type.VOLUME, 2.3272943877),
+                new Unit("pint (US, liquid)", Unit.Type.VOLUME, 2),
+                new Unit("quart (UK)", Unit.Type.VOLUME, 4.803799702),
+                new Unit("quart (US, dry)", Unit.Type.VOLUME, 4.6545887754),
+                new Unit("quart (US, liquid)", Unit.Type.VOLUME, 4),
+                new Unit("tablespoon (UK)", Unit.Type.VOLUME, 0.060047496275),
+                new Unit("tablespoon (US)", Unit.Type.VOLUME, 0.0625),
+                new Unit("teaspoon (UK)", Unit.Type.VOLUME, 0.015011874069),
+                new Unit("teaspoon (US)", Unit.Type.VOLUME, 0.020833333334)
+        };
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
         unitAdapter.setDropDownViewResource(R.layout.spinner_layout);
         unitSpinner1.setAdapter(unitAdapter);
@@ -244,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
     private void insertNumber(Button button) {
         String field = inputView.getText().toString();
         if (field.length() < 10)
-            inputView   .append(button.getText()); // TODO There has to be a better way
+            inputView.append(button.getText()); // TODO There has to be a better way
 
         convert();
     }
@@ -254,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         // If empty, insert 0.
         if (field.isEmpty())
             inputView.append("0.");
-        // Don't insert superfluous decimal places
+            // Don't insert superfluous decimal places
         else if (!field.contains("."))
             inputView.append(".");
 
