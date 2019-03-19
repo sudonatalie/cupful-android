@@ -28,7 +28,6 @@ import javax.measure.unit.Unit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class MainActivity extends AppCompatActivity {
 
     // Spinner and TextView widgets
@@ -211,33 +210,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void convert() {
-        // To/from value and spinner widgets
-        TextView fromEdit, toEdit;
-        Spinner fromSpinner, toSpinner;
-
-        // TODO Cleanup unnecessary vars
-        fromEdit = inputView;
-        toEdit = outputView;
-        fromSpinner = unitSpinner1;
-        toSpinner = unitSpinner2;
-
-        // Get values from widgets
-        Ingredient ingredient;
-        Unit fromUnit;
-        Unit toUnit;
-        double fromVal;
-        double toVal;
-
         // Get ingredients and units
-        ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
-        fromUnit = ((DisplayUnit) fromSpinner.getSelectedItem()).getUnit();
-        toUnit = ((DisplayUnit) toSpinner.getSelectedItem()).getUnit();
+        Ingredient ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
+        Unit fromUnit = ((DisplayUnit) unitSpinner1.getSelectedItem()).getUnit();
+        Unit toUnit = ((DisplayUnit) unitSpinner2.getSelectedItem()).getUnit();
 
         // Get from value
-        String fromString = fromEdit.getText().toString();
+        String fromString = inputView.getText().toString();
         // Prepend a 0 in case user submitted value beginning with decimal point
-        fromString = "0" + fromString;
-        fromVal = fromString.isEmpty() ? 0 : Double.parseDouble(fromString);
+        double fromVal = Double.parseDouble("0" + fromString);
 
         // Convert to new value
         Amount from = Amount.valueOf(fromVal, fromUnit);
@@ -254,10 +235,10 @@ public class MainActivity extends AppCompatActivity {
                 to = from.times(ingredient.getDensity()).to(toUnit);
             }
         }
-        toVal = to.getEstimatedValue();
+        double toVal = to.getEstimatedValue();
 
         // Display new value
-        toEdit.setText(naturalFormat(toVal));
+        outputView.setText(naturalFormat(toVal));
     }
 
     private void swapInputOutput() {
