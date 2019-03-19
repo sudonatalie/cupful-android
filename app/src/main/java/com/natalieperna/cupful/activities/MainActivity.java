@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Spinner and TextView widgets
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
-    private TextView inputView, outputView;
+    private EditText inputView, outputView;
 
     private static String naturalFormat(double d) {
         if (d == 0)
@@ -73,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
         inputView = findViewById(R.id.value1);
         outputView = findViewById(R.id.value2);
+
+        // Disable on-screen keyboard
+        inputView.setShowSoftInputOnFocus(false);
+        outputView.setShowSoftInputOnFocus(false);
 
         button[0] = findViewById(R.id.button_0);
         button[1] = findViewById(R.id.button_1);
@@ -253,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO Listen for changes to EditText widgets rather than calling convert all over the place
 
+    // TODO This should insert at the current focus and cursor position if set
     private void insertNumber(Button button) {
         String field = inputView.getText().toString();
         if (field.length() < 10)
