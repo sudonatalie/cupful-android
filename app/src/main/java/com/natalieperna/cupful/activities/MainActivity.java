@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseHelper dbHelper;
 
         // Button widgets
-        Button button0, button1, button2, button3, button4,
-                button5, button6, button7, button8, button9;
+        Button[] button = new Button[10];
         Button buttonDot;
         ImageButton buttonSwap, buttonBackspace;
         Button buttonQuarter, buttonThird, buttonHalf;
@@ -76,16 +75,16 @@ public class MainActivity extends AppCompatActivity {
         inputView = findViewById(R.id.value1);
         outputView = findViewById(R.id.value2);
 
-        button0 = findViewById(R.id.button_0);
-        button1 = findViewById(R.id.button_1);
-        button2 = findViewById(R.id.button_2);
-        button3 = findViewById(R.id.button_3);
-        button4 = findViewById(R.id.button_4);
-        button5 = findViewById(R.id.button_5);
-        button6 = findViewById(R.id.button_6);
-        button7 = findViewById(R.id.button_7);
-        button8 = findViewById(R.id.button_8);
-        button9 = findViewById(R.id.button_9);
+        button[0] = findViewById(R.id.button_0);
+        button[1] = findViewById(R.id.button_1);
+        button[2] = findViewById(R.id.button_2);
+        button[3] = findViewById(R.id.button_3);
+        button[4] = findViewById(R.id.button_4);
+        button[5] = findViewById(R.id.button_5);
+        button[6] = findViewById(R.id.button_6);
+        button[7] = findViewById(R.id.button_7);
+        button[8] = findViewById(R.id.button_8);
+        button[9] = findViewById(R.id.button_9);
 
         buttonDot = findViewById(R.id.button_dot);
         buttonBackspace = findViewById(R.id.button_back);
@@ -170,16 +169,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        button0.setOnClickListener(numberInputListener);
-        button1.setOnClickListener(numberInputListener);
-        button2.setOnClickListener(numberInputListener);
-        button3.setOnClickListener(numberInputListener);
-        button4.setOnClickListener(numberInputListener);
-        button5.setOnClickListener(numberInputListener);
-        button6.setOnClickListener(numberInputListener);
-        button7.setOnClickListener(numberInputListener);
-        button8.setOnClickListener(numberInputListener);
-        button9.setOnClickListener(numberInputListener);
+        for (Button b : button) b.setOnClickListener(numberInputListener);
 
         // Set up dot button
         buttonDot.setOnClickListener(new View.OnClickListener() {
