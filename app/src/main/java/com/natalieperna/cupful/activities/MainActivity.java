@@ -2,6 +2,7 @@ package com.natalieperna.cupful.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.database.DatabaseHelper;
@@ -212,6 +212,24 @@ public class MainActivity extends AppCompatActivity {
         buttonQuarter.setOnClickListener(fractionInputListener);
         buttonThird.setOnClickListener(fractionInputListener);
         buttonHalf.setOnClickListener(fractionInputListener);
+
+        // Listen for changes to input and convert when changed
+        inputView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                convert();
+            }
+        });
     }
 
     private void convert() {
@@ -256,15 +274,11 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner2.setSelection(tmpUnit);
     }
 
-    // TODO Listen for changes to EditText widgets rather than calling convert all over the place
-
     // TODO This should insert at the current focus and cursor position if set
     private void insertNumber(Button button) {
         String field = inputView.getText().toString();
         if (field.length() < 10)
             inputView.append(button.getText()); // TODO There has to be a better way
-
-        convert();
     }
 
     private void insertDot() {
@@ -275,8 +289,6 @@ public class MainActivity extends AppCompatActivity {
             // Don't insert superfluous decimal places
         else if (!field.contains("."))
             inputView.append(".");
-
-        convert();
     }
 
     private void backspace() {
@@ -287,8 +299,6 @@ public class MainActivity extends AppCompatActivity {
                 field.delete(length - 1, length);
             }
         }
-
-        convert();
     }
 
     private void erase() {
@@ -320,7 +330,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         inputView.setText(naturalFormat(val));
-
-        convert();
     }
 }
