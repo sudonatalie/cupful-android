@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.natalieperna.cupful.core.Config;
 import com.natalieperna.cupful.models.Ingredient;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -13,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteAssetHelper {
+    private static final String DATABASE_NAME = "ingredients.db";
+    private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
-        super(context, Config.DATABASE_NAME, null, Config.DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     // TODO Move to separate class?
@@ -23,7 +24,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {"id", "name", "gPerCup"};
+        String[] sqlSelect = {"name", "gPerCup"};
         String sqlTables = "ingredient";
         String sortOrder = "name";
 
@@ -36,8 +37,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         List<Ingredient> list = new ArrayList<>();
         while (c.moveToNext()) {
             Ingredient ingredient = new Ingredient(
-                    c.getString(1),
-                    c.getInt(2)
+                    c.getString(0),
+                    c.getInt(1)
             );
             list.add(ingredient);
         }

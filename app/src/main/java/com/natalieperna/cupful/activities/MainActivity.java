@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Local sqlite database helper
+        // Local SQLite database helper
         DatabaseHelper dbHelper;
 
         // Button widgets
