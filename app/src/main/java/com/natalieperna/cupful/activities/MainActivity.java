@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.natalieperna.cupful.R;
-import com.natalieperna.cupful.database.DatabaseHelper;
+import com.natalieperna.cupful.database.IngredientDatabase;
 import com.natalieperna.cupful.models.DisplayUnit;
 import com.natalieperna.cupful.models.Ingredient;
 import com.natalieperna.cupful.models.Kitchen;
@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Local SQLite database helper
-        DatabaseHelper dbHelper;
-
         // Set up view widgets
         ingredientSpinner = findViewById(R.id.ingredient);
         unitSpinner1 = findViewById(R.id.unit1);
@@ -75,11 +72,8 @@ public class MainActivity extends AppCompatActivity {
         inputView.setShowSoftInputOnFocus(false);
         outputView.setShowSoftInputOnFocus(false);
 
-        // Setup database
-        dbHelper = new DatabaseHelper(this);
-
         // Show ingredients in spinner
-        List<Ingredient> ingredients = dbHelper.getIngredients();
+        List<Ingredient> ingredients = IngredientDatabase.getIngredients(this);
         ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, ingredients);
         ingredientAdapter.setDropDownViewResource(R.layout.spinner_layout);
         ingredientSpinner.setAdapter(ingredientAdapter);
