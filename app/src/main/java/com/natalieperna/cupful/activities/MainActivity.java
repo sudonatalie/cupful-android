@@ -3,12 +3,12 @@ package com.natalieperna.cupful.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.natalieperna.cupful.R;
@@ -19,8 +19,10 @@ import com.natalieperna.cupful.models.Kitchen;
 
 import org.jscience.physics.amount.Amount;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.measure.quantity.Mass;
 import javax.measure.unit.NonSI;
@@ -61,12 +63,6 @@ public class MainActivity extends AppCompatActivity {
         // Local SQLite database helper
         DatabaseHelper dbHelper;
 
-        // Button widgets
-        Button[] button = new Button[10];
-        Button buttonDot;
-        ImageButton buttonSwap, buttonBackspace;
-        Button buttonQuarter, buttonThird, buttonHalf;
-
         // Set up view widgets
         ingredientSpinner = findViewById(R.id.ingredient);
         unitSpinner1 = findViewById(R.id.unit1);
@@ -78,25 +74,6 @@ public class MainActivity extends AppCompatActivity {
         // Disable on-screen keyboard
         inputView.setShowSoftInputOnFocus(false);
         outputView.setShowSoftInputOnFocus(false);
-
-        button[0] = findViewById(R.id.button_0);
-        button[1] = findViewById(R.id.button_1);
-        button[2] = findViewById(R.id.button_2);
-        button[3] = findViewById(R.id.button_3);
-        button[4] = findViewById(R.id.button_4);
-        button[5] = findViewById(R.id.button_5);
-        button[6] = findViewById(R.id.button_6);
-        button[7] = findViewById(R.id.button_7);
-        button[8] = findViewById(R.id.button_8);
-        button[9] = findViewById(R.id.button_9);
-
-        buttonDot = findViewById(R.id.button_dot);
-        buttonBackspace = findViewById(R.id.button_back);
-        buttonSwap = findViewById(R.id.swap);
-
-        buttonQuarter = findViewById(R.id.button_quarter);
-        buttonThird = findViewById(R.id.button_third);
-        buttonHalf = findViewById(R.id.button_half);
 
         // Setup database
         dbHelper = new DatabaseHelper(this);
@@ -137,14 +114,6 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner1.setSelection(4); // "cup (US)"
         unitSpinner2.setSelection(0); // "gram"
 
-        // Setup swap button
-        buttonSwap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                swapInputOutput();
-            }
-        });
-
         // Auto-update (convert) on changing ingredient/units
         AdapterView.OnItemSelectedListener spinnerInputListener = new AdapterView.OnItemSelectedListener() {
             @Override
@@ -164,54 +133,9 @@ public class MainActivity extends AppCompatActivity {
         unitSpinner1.setOnItemSelectedListener(spinnerInputListener);
         unitSpinner2.setOnItemSelectedListener(spinnerInputListener);
 
-        // Set up number input buttons
-        // Auto-update (convert) on changing input
-        View.OnClickListener numberInputListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                insertNumber((Button) view);
-            }
-        };
+        setupKeyButtons();
 
-        for (Button b : button) b.setOnClickListener(numberInputListener);
-
-        // Set up dot button
-        buttonDot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                insertDot();
-            }
-        });
-
-        // Set up backspace buttons
-        // Click erases last character of inputView widget
-        buttonBackspace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backspace();
-            }
-        });
-
-        // Long click erases entire inputView widget
-        buttonBackspace.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                erase();
-                return true;
-            }
-        });
-
-        // Set up fractional input buttons
-        View.OnClickListener fractionInputListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFraction(view);
-            }
-        };
-
-        buttonQuarter.setOnClickListener(fractionInputListener);
-        buttonThird.setOnClickListener(fractionInputListener);
-        buttonHalf.setOnClickListener(fractionInputListener);
+        setupFractionButtons();
 
         // Listen for changes to input and convert when changed
         inputView.addTextChangedListener(new TextWatcher() {
@@ -230,6 +154,44 @@ public class MainActivity extends AppCompatActivity {
                 convert();
             }
         });
+    }
+
+    private void setupFractionButtons() {
+        View.OnClickListener fractionInputListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFraction(view);
+            }
+        };
+
+        this.<Button>findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
+        this.<Button>findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
+        this.<Button>findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
+    }
+
+    private void setupKeyButtons() {
+        Map<View, Integer> keyButtons = new HashMap<>();
+        keyButtons.put(findViewById(R.id.button_0), KeyEvent.KEYCODE_0);
+        keyButtons.put(findViewById(R.id.button_1), KeyEvent.KEYCODE_1);
+        keyButtons.put(findViewById(R.id.button_2), KeyEvent.KEYCODE_2);
+        keyButtons.put(findViewById(R.id.button_3), KeyEvent.KEYCODE_3);
+        keyButtons.put(findViewById(R.id.button_4), KeyEvent.KEYCODE_4);
+        keyButtons.put(findViewById(R.id.button_5), KeyEvent.KEYCODE_5);
+        keyButtons.put(findViewById(R.id.button_6), KeyEvent.KEYCODE_6);
+        keyButtons.put(findViewById(R.id.button_7), KeyEvent.KEYCODE_7);
+        keyButtons.put(findViewById(R.id.button_8), KeyEvent.KEYCODE_8);
+        keyButtons.put(findViewById(R.id.button_9), KeyEvent.KEYCODE_9);
+        keyButtons.put(findViewById(R.id.button_dot), KeyEvent.KEYCODE_PERIOD);
+        keyButtons.put(findViewById(R.id.button_back), KeyEvent.KEYCODE_DEL);
+
+        for (final Map.Entry<View, Integer> keyButton : keyButtons.entrySet()) {
+            keyButton.getKey().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pressKey(keyButton.getValue());
+                }
+            });
+        }
     }
 
     private void convert() {
@@ -264,46 +226,9 @@ public class MainActivity extends AppCompatActivity {
         outputView.setText(naturalFormat(toVal));
     }
 
-    private void swapInputOutput() {
-        CharSequence tmpVal = inputView.getText();
-        inputView.setText(outputView.getText());
-        outputView.setText(tmpVal);
-
-        int tmpUnit = unitSpinner1.getSelectedItemPosition();
-        unitSpinner1.setSelection(unitSpinner2.getSelectedItemPosition());
-        unitSpinner2.setSelection(tmpUnit);
-    }
-
-    // TODO This should insert at the current focus and cursor position if set
-    private void insertNumber(Button button) {
-        String field = inputView.getText().toString();
-        if (field.length() < 10)
-            inputView.append(button.getText()); // TODO There has to be a better way
-    }
-
-    private void insertDot() {
-        String field = inputView.getText().toString();
-        // If empty, insert 0.
-        if (field.isEmpty())
-            inputView.append("0.");
-            // Don't insert superfluous decimal places
-        else if (!field.contains("."))
-            inputView.append(".");
-    }
-
-    private void backspace() {
-        Editable field = inputView.getEditableText();
-        if (field != null) {
-            int length = field.length();
-            if (length > 0) {
-                field.delete(length - 1, length);
-            }
-        }
-    }
-
-    private void erase() {
-        inputView.setText("");
-        outputView.setText("");
+    private void pressKey(int key) {
+        EditText focusedInput = outputView.hasFocus() ? outputView : inputView;
+        focusedInput.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
     }
 
     private void addFraction(View view) {
