@@ -37,41 +37,78 @@ public class MainActivity extends AppCompatActivity {
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
     private EditText inputView, outputView;
 
-    private static String naturalFormat(double d) {
-        if (d == 0)
-            return "";
-
-        // Format with 2 decimal places
-        // TODO Should have as many decimal places as input as maximum
-        String s = String.format(Locale.US, "%.2f", d);
-
-        // Remove trailing zeros
-        s = s.replaceAll("0*$", "");
-
-        // Remove trailing dot
-        s = s.replaceAll("\\.$", "");
-
-        return s;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Prepare instance state and set view to main
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set up view widgets
+        setupViewWidgets();
+
+        setupKeyButtons();
+
+        disableSystemKeyboard();
+
+        setupFractionButtons();
+
+        setupSpinners();
+
+        setupChangeListeners();
+    }
+
+    private void setupViewWidgets() {
         ingredientSpinner = findViewById(R.id.ingredient);
         unitSpinner1 = findViewById(R.id.unit1);
         unitSpinner2 = findViewById(R.id.unit2);
 
         inputView = findViewById(R.id.value1);
         outputView = findViewById(R.id.value2);
+    }
 
-        // Disable on-screen keyboard
+    private void setupKeyButtons() {
+        Map<View, Integer> keyButtons = new HashMap<>();
+        keyButtons.put(findViewById(R.id.button_0), KeyEvent.KEYCODE_0);
+        keyButtons.put(findViewById(R.id.button_1), KeyEvent.KEYCODE_1);
+        keyButtons.put(findViewById(R.id.button_2), KeyEvent.KEYCODE_2);
+        keyButtons.put(findViewById(R.id.button_3), KeyEvent.KEYCODE_3);
+        keyButtons.put(findViewById(R.id.button_4), KeyEvent.KEYCODE_4);
+        keyButtons.put(findViewById(R.id.button_5), KeyEvent.KEYCODE_5);
+        keyButtons.put(findViewById(R.id.button_6), KeyEvent.KEYCODE_6);
+        keyButtons.put(findViewById(R.id.button_7), KeyEvent.KEYCODE_7);
+        keyButtons.put(findViewById(R.id.button_8), KeyEvent.KEYCODE_8);
+        keyButtons.put(findViewById(R.id.button_9), KeyEvent.KEYCODE_9);
+        keyButtons.put(findViewById(R.id.button_dot), KeyEvent.KEYCODE_PERIOD);
+        keyButtons.put(findViewById(R.id.button_back), KeyEvent.KEYCODE_DEL);
+
+        for (final Map.Entry<View, Integer> keyButton : keyButtons.entrySet()) {
+            keyButton.getKey().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pressKey(keyButton.getValue());
+                }
+            });
+        }
+    }
+
+    private void disableSystemKeyboard() {
         inputView.setShowSoftInputOnFocus(false);
         outputView.setShowSoftInputOnFocus(false);
+    }
 
+    private void setupFractionButtons() {
+        View.OnClickListener fractionInputListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFraction(view);
+            }
+        };
+
+        this.<Button>findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
+        this.<Button>findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
+        this.<Button>findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
+    }
+
+    private void setupSpinners() {
         // Show ingredients in spinner
         List<Ingredient> ingredients = IngredientDatabase.getIngredients(this);
         ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, ingredients);
@@ -104,11 +141,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Set initial values
         // TODO Avoid hard-coding
-        ingredientSpinner.setSelection(191); // Flour, all-purpose
-        unitSpinner1.setSelection(4); // "cup (US)"
-        unitSpinner2.setSelection(0); // "gram"
+        int flourIndex = 191;
+        int cupUsIndex = 4;
+        int gramIndex = 0;
+        ingredientSpinner.setSelection(flourIndex);
+        unitSpinner1.setSelection(cupUsIndex);
+        unitSpinner2.setSelection(gramIndex);
+    }
 
-        // Auto-update (convert) on changing ingredient/units
+    private void setupChangeListeners() {
+        // Listen for changes to ingredients/units and convert
         AdapterView.OnItemSelectedListener spinnerInputListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -122,16 +164,11 @@ public class MainActivity extends AppCompatActivity {
         };
 
         ingredientSpinner.setOnItemSelectedListener(spinnerInputListener);
-
-        // Whichever unit is changed, always change the second row's value accordingly
         unitSpinner1.setOnItemSelectedListener(spinnerInputListener);
         unitSpinner2.setOnItemSelectedListener(spinnerInputListener);
 
-        setupKeyButtons();
-
-        setupFractionButtons();
-
-        // Listen for changes to input and convert when changed
+        // Listen for changes to input and convert
+        // TODO Also listen on outputView, and convert in the logical direction
         inputView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -150,42 +187,35 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setupFractionButtons() {
-        View.OnClickListener fractionInputListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFraction(view);
-            }
-        };
-
-        this.<Button>findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
-        this.<Button>findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
-        this.<Button>findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
+    private void pressKey(int key) {
+        EditText focusedInput = outputView.hasFocus() ? outputView : inputView;
+        focusedInput.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
     }
 
-    private void setupKeyButtons() {
-        Map<View, Integer> keyButtons = new HashMap<>();
-        keyButtons.put(findViewById(R.id.button_0), KeyEvent.KEYCODE_0);
-        keyButtons.put(findViewById(R.id.button_1), KeyEvent.KEYCODE_1);
-        keyButtons.put(findViewById(R.id.button_2), KeyEvent.KEYCODE_2);
-        keyButtons.put(findViewById(R.id.button_3), KeyEvent.KEYCODE_3);
-        keyButtons.put(findViewById(R.id.button_4), KeyEvent.KEYCODE_4);
-        keyButtons.put(findViewById(R.id.button_5), KeyEvent.KEYCODE_5);
-        keyButtons.put(findViewById(R.id.button_6), KeyEvent.KEYCODE_6);
-        keyButtons.put(findViewById(R.id.button_7), KeyEvent.KEYCODE_7);
-        keyButtons.put(findViewById(R.id.button_8), KeyEvent.KEYCODE_8);
-        keyButtons.put(findViewById(R.id.button_9), KeyEvent.KEYCODE_9);
-        keyButtons.put(findViewById(R.id.button_dot), KeyEvent.KEYCODE_PERIOD);
-        keyButtons.put(findViewById(R.id.button_back), KeyEvent.KEYCODE_DEL);
+    private void addFraction(View view) {
+        String focusString = inputView.getText().toString();
 
-        for (final Map.Entry<View, Integer> keyButton : keyButtons.entrySet()) {
-            keyButton.getKey().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pressKey(keyButton.getValue());
-                }
-            });
+        double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
+
+        switch (view.getId()) {
+            case R.id.button_quarter:
+                val += 0.25;
+                break;
+            case R.id.button_third:
+                val += 0.33;
+                break;
+            case R.id.button_half:
+                val += 0.5;
+                break;
         }
+
+        // Weird rounding mostly to account for +⅓ three times
+        double fractional = val % 1;
+        if (fractional <= 0.01 || fractional >= 0.99) {
+            val = Math.round(val);
+        }
+
+        inputView.setText(naturalFormat(val));
     }
 
     private void convert() {
@@ -220,34 +250,20 @@ public class MainActivity extends AppCompatActivity {
         outputView.setText(naturalFormat(toVal));
     }
 
-    private void pressKey(int key) {
-        EditText focusedInput = outputView.hasFocus() ? outputView : inputView;
-        focusedInput.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
-    }
+    private static String naturalFormat(double d) {
+        if (d == 0)
+            return "";
 
-    private void addFraction(View view) {
-        String focusString = inputView.getText().toString();
+        // Format with 2 decimal places
+        // TODO Should have as many decimal places as input as maximum
+        String s = String.format(Locale.US, "%.2f", d);
 
-        double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
+        // Remove trailing zeros
+        s = s.replaceAll("0*$", "");
 
-        switch (view.getId()) {
-            case R.id.button_quarter:
-                val += 0.25;
-                break;
-            case R.id.button_third:
-                val += 0.33;
-                break;
-            case R.id.button_half:
-                val += 0.5;
-                break;
-        }
+        // Remove trailing dot
+        s = s.replaceAll("\\.$", "");
 
-        // Weird rounding mostly to account for +⅓ three times
-        double fractional = val % 1;
-        if (fractional <= 0.01 || fractional >= 0.99) {
-            val = Math.round(val);
-        }
-
-        inputView.setText(naturalFormat(val));
+        return s;
     }
 }
