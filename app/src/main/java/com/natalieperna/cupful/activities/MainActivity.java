@@ -1,5 +1,6 @@
 package com.natalieperna.cupful.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,9 +30,7 @@ import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     // Spinner and TextView widgets
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
