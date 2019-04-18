@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.measure.quantity.Mass;
+import javax.measure.quantity.Quantity;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
@@ -144,21 +145,21 @@ public class MainActivity extends Activity {
 
         // Show units in spinners
         DisplayUnit[] units = {
-                new DisplayUnit(SI.GRAM, "g"),
-                new DisplayUnit(SI.KILOGRAM, "kg"),
-                new DisplayUnit(NonSI.POUND, "lb"),
-                new DisplayUnit(NonSI.OUNCE, "oz"),
+                new DisplayUnit<>(SI.GRAM, "g"),
+                new DisplayUnit<>(SI.KILOGRAM, "kg"),
+                new DisplayUnit<>(NonSI.POUND, "lb"),
+                new DisplayUnit<>(NonSI.OUNCE, "oz"),
 
-                new DisplayUnit(Kitchen.CUP_US, "cup (US)"),
-                new DisplayUnit(Kitchen.CUP_UK, "cup (UK)"),
-                new DisplayUnit(NonSI.LITER, "L"),
-                new DisplayUnit(SI.MILLI(NonSI.LITER), "mL"),
-                new DisplayUnit(NonSI.OUNCE_LIQUID_US, "fl oz (US)"),
-                new DisplayUnit(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
-                new DisplayUnit(Kitchen.TABLESPOON_US, "tbsp (US)"),
-                new DisplayUnit(Kitchen.TABLESPOON_UK, "tbsp (UK)"),
-                new DisplayUnit(Kitchen.TEASPOON_US, "tsp (US)"),
-                new DisplayUnit(Kitchen.TEASPOON_UK, "tsp (UK)"),
+                new DisplayUnit<>(Kitchen.CUP_US, "cup (US)"),
+                new DisplayUnit<>(Kitchen.CUP_UK, "cup (UK)"),
+                new DisplayUnit<>(NonSI.LITER, "L"),
+                new DisplayUnit<>(SI.MILLI(NonSI.LITER), "mL"),
+                new DisplayUnit<>(NonSI.OUNCE_LIQUID_US, "fl oz (US)"),
+                new DisplayUnit<>(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
+                new DisplayUnit<>(Kitchen.TABLESPOON_US, "tbsp (US)"),
+                new DisplayUnit<>(Kitchen.TABLESPOON_UK, "tbsp (UK)"),
+                new DisplayUnit<>(Kitchen.TEASPOON_US, "tsp (US)"),
+                new DisplayUnit<>(Kitchen.TEASPOON_UK, "tsp (UK)"),
         };
 
         ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
@@ -301,8 +302,8 @@ public class MainActivity extends Activity {
 
         // Get ingredients and units
         Ingredient ingredient = (Ingredient) ingredientInput.getSelectedItem();
-        Unit fromUnit = ((DisplayUnit) fromUnitSpinner.getSelectedItem()).getUnit();
-        Unit toUnit = ((DisplayUnit) toUnitSpinner.getSelectedItem()).getUnit();
+        Unit<? extends Quantity> fromUnit = ((DisplayUnit<? extends Quantity>) fromUnitSpinner.getSelectedItem()).getUnit();
+        Unit<? extends Quantity> toUnit = ((DisplayUnit<? extends Quantity>) toUnitSpinner.getSelectedItem()).getUnit();
 
         // Get from value
         String fromString = fromInput.getText().toString();
@@ -310,13 +311,13 @@ public class MainActivity extends Activity {
         double fromVal = Double.parseDouble("0" + fromString);
 
         // Convert to new value
-        Amount from = Amount.valueOf(fromVal, fromUnit);
-        Amount to;
+        Amount<? extends Quantity> from = Amount.valueOf(fromVal, fromUnit);
+        Amount<? extends Quantity> to;
         if (fromUnit.isCompatible(toUnit))
             to = from.to(toUnit);
         else {
             // Mass -> Volume
-            if (fromUnit.isCompatible(Mass.UNIT)) {
+            if (Mass.UNIT.isCompatible(fromUnit)) {
                 to = from.divide(ingredient.getDensity()).to(toUnit);
             }
             // Volume -> Mass

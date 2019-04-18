@@ -1,17 +1,18 @@
 package com.natalieperna.cupful.models;
 
+import javax.measure.quantity.Quantity;
 import javax.measure.unit.Unit;
 
-public class DisplayUnit {
-    private final Unit unit;
+public class DisplayUnit<Q extends Quantity> {
+    private final Unit<Q> unit;
     private final String display;
 
-    public DisplayUnit(Unit unit, String display) {
+    public DisplayUnit(Unit<Q> unit, String display) {
         this.unit = unit;
         this.display = display;
     }
 
-    public Unit getUnit() {
+    public Unit<Q> getUnit() {
         return unit;
     }
 
