@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
     private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
     private EditText inputView, outputView;
 
+    boolean ignoreListeners = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Prepare instance state and set view to main
@@ -113,6 +115,8 @@ public class MainActivity extends Activity {
         findViewById(R.id.swap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ignoreListeners = true;
+
                 // Swap units
                 int tempPosition = unitSpinner1.getSelectedItemPosition();
                 unitSpinner1.setSelection(unitSpinner2.getSelectedItemPosition());
@@ -126,6 +130,8 @@ public class MainActivity extends Activity {
                 // Move cursor to end of input
                 inputView.requestFocus();
                 inputView.setSelection(inputView.getText().length());
+
+                ignoreListeners = false;
             }
         });
     }
@@ -173,24 +179,44 @@ public class MainActivity extends Activity {
 
     private void setupChangeListeners() {
         // Listen for changes to ingredients/units and convert
-        AdapterView.OnItemSelectedListener spinnerInputListener = new AdapterView.OnItemSelectedListener() {
+        ingredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                convert();
+                if (ignoreListeners) return;
+                convert(true);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        };
+        });
+        unitSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (ignoreListeners) return;
+                convert(true);
+            }
 
-        ingredientSpinner.setOnItemSelectedListener(spinnerInputListener);
-        unitSpinner1.setOnItemSelectedListener(spinnerInputListener);
-        unitSpinner2.setOnItemSelectedListener(spinnerInputListener);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-        // Listen for changes to input and convert
-        // TODO Also listen on outputView, and convert in the logical direction
+            }
+        });
+        unitSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (ignoreListeners) return;
+                convert(false);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // Listen for changes to input/output and convert
         inputView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -204,7 +230,25 @@ public class MainActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                convert();
+                if (ignoreListeners) return;
+                convert(true);
+            }
+        });
+        outputView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (ignoreListeners) return;
+                convert(false);
             }
         });
     }
@@ -240,14 +284,28 @@ public class MainActivity extends Activity {
         inputView.setText(naturalFormat(val));
     }
 
-    private void convert() {
+    private void convert(boolean forward) {
+        Spinner fromSpinner, toSpinner;
+        EditText fromText, toText;
+        if (forward) {
+            fromSpinner = unitSpinner1;
+            toSpinner = unitSpinner2;
+            fromText = inputView;
+            toText = outputView;
+        } else {
+            fromSpinner = unitSpinner2;
+            toSpinner = unitSpinner1;
+            fromText = outputView;
+            toText = inputView;
+        }
+
         // Get ingredients and units
         Ingredient ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
-        Unit fromUnit = ((DisplayUnit) unitSpinner1.getSelectedItem()).getUnit();
-        Unit toUnit = ((DisplayUnit) unitSpinner2.getSelectedItem()).getUnit();
+        Unit fromUnit = ((DisplayUnit) fromSpinner.getSelectedItem()).getUnit();
+        Unit toUnit = ((DisplayUnit) toSpinner.getSelectedItem()).getUnit();
 
         // Get from value
-        String fromString = inputView.getText().toString();
+        String fromString = fromText.getText().toString();
         // Prepend a 0 in case user submitted value beginning with decimal point
         double fromVal = Double.parseDouble("0" + fromString);
 
@@ -269,7 +327,9 @@ public class MainActivity extends Activity {
         double toVal = to.getEstimatedValue();
 
         // Display new value
-        outputView.setText(naturalFormat(toVal));
+        ignoreListeners = true;
+        toText.setText(naturalFormat(toVal));
+        ignoreListeners = false;
     }
 
     private static String naturalFormat(double d) {
