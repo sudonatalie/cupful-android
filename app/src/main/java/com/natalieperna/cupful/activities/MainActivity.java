@@ -254,12 +254,12 @@ public class MainActivity extends Activity {
     }
 
     private void pressKey(int key) {
-        EditText focusedInput = outputView.hasFocus() ? outputView : inputView;
-        focusedInput.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
+        getFocusedInput().dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
     }
 
     private void addFraction(View view) {
-        String focusString = inputView.getText().toString();
+        EditText focusedInput = getFocusedInput();
+        String focusString = focusedInput.getText().toString();
 
         double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
 
@@ -281,7 +281,8 @@ public class MainActivity extends Activity {
             val = Math.round(val);
         }
 
-        inputView.setText(naturalFormat(val));
+        focusedInput.setText(naturalFormat(val));
+        focusedInput.setSelection(focusedInput.getText().length());
     }
 
     private void convert(boolean forward) {
@@ -330,6 +331,10 @@ public class MainActivity extends Activity {
         ignoreListeners = true;
         toText.setText(naturalFormat(toVal));
         ignoreListeners = false;
+    }
+
+    private EditText getFocusedInput() {
+        return outputView.hasFocus() ? outputView : inputView;
     }
 
     private static String naturalFormat(double d) {

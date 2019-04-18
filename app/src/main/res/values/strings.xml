@@ -12,9 +12,9 @@
     <string name="eight">8</string>
     <string name="nine">9</string>
 
-    <string name="quarter">¼</string>
-    <string name="third">⅓</string>
-    <string name="half">½</string>
+    <string name="quarter">+¼</string>
+    <string name="third">+⅓</string>
+    <string name="half">+½</string>
 
     <string name="dot">.</string>
     <string name="clear">C</string>
