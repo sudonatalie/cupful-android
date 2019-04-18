@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -32,11 +31,11 @@ import javax.measure.unit.Unit;
 
 public class MainActivity extends Activity {
 
-    // Spinner and TextView widgets
-    private Spinner ingredientSpinner, unitSpinner1, unitSpinner2;
-    private EditText inputView, outputView;
-
     boolean ignoreListeners = false;
+
+    private Spinner ingredientInput;
+    private Spinner topUnit, bottomUnit;
+    private EditText topInput, bottomInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +59,12 @@ public class MainActivity extends Activity {
     }
 
     private void setupViewWidgets() {
-        ingredientSpinner = findViewById(R.id.ingredient);
-        unitSpinner1 = findViewById(R.id.unit1);
-        unitSpinner2 = findViewById(R.id.unit2);
+        ingredientInput = findViewById(R.id.ingredient);
+        topUnit = findViewById(R.id.unit1);
+        bottomUnit = findViewById(R.id.unit2);
 
-        inputView = findViewById(R.id.value1);
-        outputView = findViewById(R.id.value2);
+        topInput = findViewById(R.id.value1);
+        bottomInput = findViewById(R.id.value2);
     }
 
     private void setupKeyButtons() {
@@ -94,8 +93,8 @@ public class MainActivity extends Activity {
     }
 
     private void disableSystemKeyboard() {
-        inputView.setShowSoftInputOnFocus(false);
-        outputView.setShowSoftInputOnFocus(false);
+        topInput.setShowSoftInputOnFocus(false);
+        bottomInput.setShowSoftInputOnFocus(false);
     }
 
     private void setupFractionButtons() {
@@ -106,9 +105,9 @@ public class MainActivity extends Activity {
             }
         };
 
-        this.<Button>findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
-        this.<Button>findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
-        this.<Button>findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
+        findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
+        findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
+        findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
     }
 
     private void setupSwapButtons() {
@@ -118,18 +117,18 @@ public class MainActivity extends Activity {
                 ignoreListeners = true;
 
                 // Swap units
-                int tempPosition = unitSpinner1.getSelectedItemPosition();
-                unitSpinner1.setSelection(unitSpinner2.getSelectedItemPosition());
-                unitSpinner2.setSelection(tempPosition);
+                int tempPosition = topUnit.getSelectedItemPosition();
+                topUnit.setSelection(bottomUnit.getSelectedItemPosition());
+                bottomUnit.setSelection(tempPosition);
 
                 // Swap values
-                CharSequence tempText = inputView.getText();
-                inputView.setText(outputView.getText());
-                outputView.setText(tempText);
+                CharSequence tempText = topInput.getText();
+                topInput.setText(bottomInput.getText());
+                bottomInput.setText(tempText);
 
                 // Move cursor to end of input
-                inputView.requestFocus();
-                inputView.setSelection(inputView.getText().length());
+                topInput.requestFocus();
+                topInput.setSelection(topInput.getText().length());
 
                 ignoreListeners = false;
             }
@@ -141,7 +140,7 @@ public class MainActivity extends Activity {
         List<Ingredient> ingredients = IngredientDatabase.getIngredients(this);
         ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, ingredients);
         ingredientAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        ingredientSpinner.setAdapter(ingredientAdapter);
+        ingredientInput.setAdapter(ingredientAdapter);
 
         // Show units in spinners
         DisplayUnit[] units = {
@@ -164,22 +163,22 @@ public class MainActivity extends Activity {
 
         ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
         unitAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        unitSpinner1.setAdapter(unitAdapter);
-        unitSpinner2.setAdapter(unitAdapter);
+        topUnit.setAdapter(unitAdapter);
+        bottomUnit.setAdapter(unitAdapter);
 
         // Set initial values
         // TODO Avoid hard-coding
         int flourIndex = 191;
         int cupUsIndex = 4;
         int gramIndex = 0;
-        ingredientSpinner.setSelection(flourIndex);
-        unitSpinner1.setSelection(cupUsIndex);
-        unitSpinner2.setSelection(gramIndex);
+        ingredientInput.setSelection(flourIndex);
+        topUnit.setSelection(cupUsIndex);
+        bottomUnit.setSelection(gramIndex);
     }
 
     private void setupChangeListeners() {
         // Listen for changes to ingredients/units and convert
-        ingredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ingredientInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (ignoreListeners) return;
@@ -191,7 +190,7 @@ public class MainActivity extends Activity {
 
             }
         });
-        unitSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        topUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (ignoreListeners) return;
@@ -203,7 +202,7 @@ public class MainActivity extends Activity {
 
             }
         });
-        unitSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        bottomUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (ignoreListeners) return;
@@ -217,7 +216,7 @@ public class MainActivity extends Activity {
         });
 
         // Listen for changes to input/output and convert
-        inputView.addTextChangedListener(new TextWatcher() {
+        topInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -234,7 +233,7 @@ public class MainActivity extends Activity {
                 convert(true);
             }
         });
-        outputView.addTextChangedListener(new TextWatcher() {
+        bottomInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -286,27 +285,27 @@ public class MainActivity extends Activity {
     }
 
     private void convert(boolean forward) {
-        Spinner fromSpinner, toSpinner;
-        EditText fromText, toText;
+        Spinner fromUnitSpinner, toUnitSpinner;
+        EditText fromInput, toInput;
         if (forward) {
-            fromSpinner = unitSpinner1;
-            toSpinner = unitSpinner2;
-            fromText = inputView;
-            toText = outputView;
+            fromUnitSpinner = topUnit;
+            toUnitSpinner = bottomUnit;
+            fromInput = topInput;
+            toInput = bottomInput;
         } else {
-            fromSpinner = unitSpinner2;
-            toSpinner = unitSpinner1;
-            fromText = outputView;
-            toText = inputView;
+            fromUnitSpinner = bottomUnit;
+            toUnitSpinner = topUnit;
+            fromInput = bottomInput;
+            toInput = topInput;
         }
 
         // Get ingredients and units
-        Ingredient ingredient = (Ingredient) ingredientSpinner.getSelectedItem();
-        Unit fromUnit = ((DisplayUnit) fromSpinner.getSelectedItem()).getUnit();
-        Unit toUnit = ((DisplayUnit) toSpinner.getSelectedItem()).getUnit();
+        Ingredient ingredient = (Ingredient) ingredientInput.getSelectedItem();
+        Unit fromUnit = ((DisplayUnit) fromUnitSpinner.getSelectedItem()).getUnit();
+        Unit toUnit = ((DisplayUnit) toUnitSpinner.getSelectedItem()).getUnit();
 
         // Get from value
-        String fromString = fromText.getText().toString();
+        String fromString = fromInput.getText().toString();
         // Prepend a 0 in case user submitted value beginning with decimal point
         double fromVal = Double.parseDouble("0" + fromString);
 
@@ -329,12 +328,12 @@ public class MainActivity extends Activity {
 
         // Display new value
         ignoreListeners = true;
-        toText.setText(naturalFormat(toVal));
+        toInput.setText(naturalFormat(toVal));
         ignoreListeners = false;
     }
 
     private EditText getFocusedInput() {
-        return outputView.hasFocus() ? outputView : inputView;
+        return bottomInput.hasFocus() ? bottomInput : topInput;
     }
 
     private static String naturalFormat(double d) {
