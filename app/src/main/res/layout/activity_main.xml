@@ -99,6 +99,12 @@
                 android:id="@+id/button_9"
                 style="@style/InputButtons"
                 android:text="@string/nine" />
+
+            <ImageButton
+                android:id="@+id/swap"
+                style="@style/InputButtons"
+                android:cropToPadding="false"
+                android:src="@drawable/ic_swap_vert_white" />
         </TableRow>
 
         <TableRow android:layout_weight="1">

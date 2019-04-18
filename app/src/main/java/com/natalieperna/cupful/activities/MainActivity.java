@@ -50,6 +50,8 @@ public class MainActivity extends Activity {
 
         setupFractionButtons();
 
+        setupSwapButtons();
+
         setupSpinners();
 
         setupChangeListeners();
@@ -105,6 +107,27 @@ public class MainActivity extends Activity {
         this.<Button>findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
         this.<Button>findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
         this.<Button>findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
+    }
+
+    private void setupSwapButtons() {
+        findViewById(R.id.swap).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Swap units
+                int tempPosition = unitSpinner1.getSelectedItemPosition();
+                unitSpinner1.setSelection(unitSpinner2.getSelectedItemPosition());
+                unitSpinner2.setSelection(tempPosition);
+
+                // Swap values
+                CharSequence tempText = inputView.getText();
+                inputView.setText(outputView.getText());
+                outputView.setText(tempText);
+
+                // Move cursor to end of input
+                inputView.requestFocus();
+                inputView.setSelection(inputView.getText().length());
+            }
+        });
     }
 
     private void setupSpinners() {
