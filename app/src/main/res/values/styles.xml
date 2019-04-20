@@ -8,8 +8,4 @@
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
     </style>
 
-    <style name="SpinnerItem">
-        <item name="android:textColor">@color/primary</item>
-        <item name="android:textSize">@dimen/fontSize</item>
-    </style>
 </resources>
