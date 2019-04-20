@@ -4,6 +4,8 @@
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primaryDark</item>
         <item name="android:colorAccent">@color/accent</item>
+        <item name="android:textSize">@dimen/fontSize</item>
+        <item name="android:textColor">@color/primaryText</item>
     </style>
 
     <style name="InputButtons">
@@ -35,8 +37,6 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingStart">@dimen/margin</item>
         <item name="android:paddingLeft">@dimen/margin</item>
-        <item name="android:textColor">@color/primaryText</item>
-        <item name="android:textSize">@dimen/fontSize</item>
     </style>
 
     <style name="UnitDropdown">
