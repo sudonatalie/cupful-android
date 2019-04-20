@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="8"
     tools:context=".activities.MainActivity">
 
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
@@ -45,8 +44,7 @@
         android:layout_height="0dp"
         android:layout_weight="5"
         android:background="@color/primaryLight"
-        android:stretchColumns="*"
-        android:weightSum="4">
+        android:stretchColumns="*">
 
         <TableRow android:layout_weight="1">
 
@@ -68,7 +66,6 @@
             <ImageButton
                 android:id="@+id/swap"
                 style="@style/InputButtons"
-                android:cropToPadding="false"
                 android:src="@drawable/ic_swap_vert_white" />
         </TableRow>
 
