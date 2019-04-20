@@ -14,65 +14,30 @@
         android:layout_weight="1"
         android:paddingLeft="@dimen/margin" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider" />
+    <View style="@style/Divider" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/Row">
 
         <EditText
             android:id="@+id/value1"
-            android:inputType="numberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/margin"
-            android:paddingLeft="@dimen/margin"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/fontSize" />
+            style="@style/DecimalInput" />
 
         <Spinner
             android:id="@+id/unit1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0" />
+            style="@style/UnitDropdown" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider" />
+    <View style="@style/Divider" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
+    <LinearLayout style="@style/Row">
 
         <EditText
             android:id="@+id/value2"
-            android:inputType="numberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/margin"
-            android:paddingLeft="@dimen/margin"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/fontSize" />
+            style="@style/DecimalInput" />
 
         <Spinner
             android:id="@+id/unit2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0" />
+            style="@style/UnitDropdown" />
     </LinearLayout>
 
     <TableLayout
