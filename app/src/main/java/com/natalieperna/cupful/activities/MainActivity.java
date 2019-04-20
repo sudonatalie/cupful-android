@@ -32,7 +32,7 @@ import javax.measure.unit.Unit;
 
 public class MainActivity extends Activity {
 
-    boolean ignoreListeners = false;
+    private boolean ignoreListeners = false;
 
     private Spinner ingredientInput;
     private Spinner topUnit, bottomUnit;
@@ -52,7 +52,9 @@ public class MainActivity extends Activity {
 
         setupFractionButtons();
 
-        setupSwapButtons();
+        setupClearButton();
+
+        setupSwapButton();
 
         setupSpinners();
 
@@ -111,7 +113,23 @@ public class MainActivity extends Activity {
         findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
     }
 
-    private void setupSwapButtons() {
+    private void setupClearButton() {
+        findViewById(R.id.button_back).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ignoreListeners = true;
+
+                topInput.getText().clear();
+                bottomInput.getText().clear();
+
+                ignoreListeners = false;
+
+                return true;
+            }
+        });
+    }
+
+    private void setupSwapButton() {
         findViewById(R.id.swap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
