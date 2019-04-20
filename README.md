@@ -11,8 +11,8 @@ It's an essential tool for every baker and chef who values precise measurements 
 
 | Conversion                 | Ingredients                |
 |:--------------------------:|:--------------------------:|
-| ![Screenshot][screenshot1] | ![Screenshot][screenshot3] |
+| ![Screenshot][screenshot1] | ![Screenshot][screenshot4] |
 
 
 [screenshot1]: https://github.com/natalieperna/cupful-android/blob/master/images/screenshots/screenshot_1.png
-[screenshot3]: https://github.com/natalieperna/cupful-android/blob/master/images/screenshots/screenshot_3.png
+[screenshot4]: https://github.com/natalieperna/cupful-android/blob/master/images/screenshots/screenshot_4.png
