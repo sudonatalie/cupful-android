@@ -54,7 +54,8 @@
         android:layout_weight="4"
         android:background="@color/background"
         android:elevation="0dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <TableLayout
             android:layout_width="0dp"
