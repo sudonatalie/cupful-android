@@ -161,21 +161,20 @@ public class MainActivity extends Activity {
 
         // Show units in spinners
         DisplayUnit[] units = {
+                new DisplayUnit<>(Kitchen.CUP_US, "cup (US)"),
+                new DisplayUnit<>(Kitchen.TABLESPOON_US, "tbsp (US)"),
+                new DisplayUnit<>(Kitchen.TEASPOON_US, "tsp (US)"),
                 new DisplayUnit<>(SI.GRAM, "g"),
                 new DisplayUnit<>(SI.KILOGRAM, "kg"),
-                new DisplayUnit<>(NonSI.POUND, "lb"),
                 new DisplayUnit<>(NonSI.OUNCE, "oz"),
-
-                new DisplayUnit<>(Kitchen.CUP_US, "cup (US)"),
-                new DisplayUnit<>(Kitchen.CUP_UK, "cup (UK)"),
-                new DisplayUnit<>(NonSI.LITER, "L"),
+                new DisplayUnit<>(NonSI.POUND, "lb"),
                 new DisplayUnit<>(SI.MILLI(NonSI.LITER), "mL"),
+                new DisplayUnit<>(NonSI.LITER, "L"),
                 new DisplayUnit<>(NonSI.OUNCE_LIQUID_US, "fl oz (US)"),
-                new DisplayUnit<>(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
-                new DisplayUnit<>(Kitchen.TABLESPOON_US, "tbsp (US)"),
+                new DisplayUnit<>(Kitchen.CUP_UK, "cup (UK)"),
                 new DisplayUnit<>(Kitchen.TABLESPOON_UK, "tbsp (UK)"),
-                new DisplayUnit<>(Kitchen.TEASPOON_US, "tsp (US)"),
                 new DisplayUnit<>(Kitchen.TEASPOON_UK, "tsp (UK)"),
+                new DisplayUnit<>(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
         };
 
         ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
@@ -186,8 +185,8 @@ public class MainActivity extends Activity {
         // Set initial values
         // TODO Avoid hard-coding
         int flourIndex = 191;
-        int cupUsIndex = 4;
-        int gramIndex = 0;
+        int cupUsIndex = 0;
+        int gramIndex = 3;
         ingredientInput.setSelection(flourIndex);
         topUnit.setSelection(cupUsIndex);
         bottomUnit.setSelection(gramIndex);
