@@ -145,9 +145,7 @@ public class MainActivity extends Activity {
                 topInput.setText(bottomInput.getText());
                 bottomInput.setText(tempText);
 
-                // Move cursor to end of input
-                topInput.requestFocus();
-                topInput.setSelection(topInput.getText().length());
+                // TODO Maintain cursor location
 
                 ignoreListeners = false;
             }
