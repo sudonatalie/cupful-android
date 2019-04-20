@@ -155,8 +155,7 @@ public class MainActivity extends Activity {
     private void setupSpinners() {
         // Show ingredients in spinner
         List<Ingredient> ingredients = IngredientDatabase.getIngredients(this);
-        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, ingredients);
-        ingredientAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ingredients);
         ingredientInput.setAdapter(ingredientAdapter);
 
         // Show units in spinners
@@ -177,8 +176,8 @@ public class MainActivity extends Activity {
                 new DisplayUnit<>(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
         };
 
-        ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, units);
-        unitAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         topUnit.setAdapter(unitAdapter);
         bottomUnit.setAdapter(unitAdapter);
 
