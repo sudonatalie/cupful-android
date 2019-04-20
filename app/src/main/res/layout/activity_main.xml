@@ -6,136 +6,170 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/ingredient"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="@dimen/margin" />
+        android:layout_weight="3"
+        android:background="@color/background"
+        android:elevation="4dp"
+        android:orientation="vertical">
 
-    <View style="@style/Divider" />
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/ingredient"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/margin" />
 
-    <LinearLayout style="@style/Row">
+        <View style="@style/Divider" />
 
-        <EditText
-            android:id="@+id/value1"
-            style="@style/DecimalInput" />
+        <LinearLayout style="@style/Row">
 
-        <Spinner
-            android:id="@+id/unit1"
-            style="@style/UnitDropdown" />
+            <EditText
+                android:id="@+id/value1"
+                style="@style/DecimalInput" />
+
+            <Spinner
+                android:id="@+id/unit1"
+                style="@style/UnitDropdown" />
+        </LinearLayout>
+
+        <View style="@style/Divider" />
+
+        <LinearLayout style="@style/Row">
+
+            <EditText
+                android:id="@+id/value2"
+                style="@style/DecimalInput" />
+
+            <Spinner
+                android:id="@+id/unit2"
+                style="@style/UnitDropdown" />
+        </LinearLayout>
     </LinearLayout>
 
-    <View style="@style/Divider" />
-
-    <LinearLayout style="@style/Row">
-
-        <EditText
-            android:id="@+id/value2"
-            style="@style/DecimalInput" />
-
-        <Spinner
-            android:id="@+id/unit2"
-            style="@style/UnitDropdown" />
-    </LinearLayout>
-
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
-        android:background="@color/primaryLight"
-        android:stretchColumns="*">
+        android:layout_weight="4"
+        android:background="@color/background"
+        android:elevation="0dp"
+        android:orientation="horizontal">
 
-        <TableRow android:layout_weight="1">
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/primaryLight"
+            android:elevation="0dp"
+            android:stretchColumns="*">
 
-            <Button
-                android:id="@+id/button_7"
-                style="@style/InputButtons"
-                android:text="@string/seven" />
+            <TableRow android:layout_weight="1">
 
-            <Button
-                android:id="@+id/button_8"
-                style="@style/InputButtons"
-                android:text="@string/eight" />
+                <Button
+                    android:id="@+id/button_7"
+                    style="@style/InputButtons"
+                    android:text="@string/seven" />
 
-            <Button
-                android:id="@+id/button_9"
-                style="@style/InputButtons"
-                android:text="@string/nine" />
+                <Button
+                    android:id="@+id/button_8"
+                    style="@style/InputButtons"
+                    android:text="@string/eight" />
 
-            <ImageButton
-                android:id="@+id/swap"
-                style="@style/InputButtons"
-                android:src="@drawable/ic_swap_vert_white" />
-        </TableRow>
+                <Button
+                    android:id="@+id/button_9"
+                    style="@style/InputButtons"
+                    android:text="@string/nine" />
+            </TableRow>
 
-        <TableRow android:layout_weight="1">
+            <TableRow android:layout_weight="1">
 
-            <Button
-                android:id="@+id/button_4"
-                style="@style/InputButtons"
-                android:text="@string/four" />
+                <Button
+                    android:id="@+id/button_4"
+                    style="@style/InputButtons"
+                    android:text="@string/four" />
 
-            <Button
-                android:id="@+id/button_5"
-                style="@style/InputButtons"
-                android:text="@string/five" />
+                <Button
+                    android:id="@+id/button_5"
+                    style="@style/InputButtons"
+                    android:text="@string/five" />
 
-            <Button
-                android:id="@+id/button_6"
-                style="@style/InputButtons"
-                android:text="@string/six" />
+                <Button
+                    android:id="@+id/button_6"
+                    style="@style/InputButtons"
+                    android:text="@string/six" />
+            </TableRow>
 
-            <Button
-                android:id="@+id/button_half"
-                style="@style/InputButtons"
-                android:text="@string/half" />
-        </TableRow>
+            <TableRow android:layout_weight="1">
 
-        <TableRow android:layout_weight="1">
+                <Button
+                    android:id="@+id/button_1"
+                    style="@style/InputButtons"
+                    android:text="@string/one" />
 
-            <Button
-                android:id="@+id/button_1"
-                style="@style/InputButtons"
-                android:text="@string/one" />
+                <Button
+                    android:id="@+id/button_2"
+                    style="@style/InputButtons"
+                    android:text="@string/two" />
 
-            <Button
-                android:id="@+id/button_2"
-                style="@style/InputButtons"
-                android:text="@string/two" />
+                <Button
+                    android:id="@+id/button_3"
+                    style="@style/InputButtons"
+                    android:text="@string/three" />
+            </TableRow>
 
-            <Button
-                android:id="@+id/button_3"
-                style="@style/InputButtons"
-                android:text="@string/three" />
+            <TableRow android:layout_weight="1">
 
-            <Button
-                android:id="@+id/button_third"
-                style="@style/InputButtons"
-                android:text="@string/third" />
-        </TableRow>
+                <Button
+                    android:id="@+id/button_dot"
+                    style="@style/InputButtons"
+                    android:text="@string/dot" />
 
-        <TableRow android:layout_weight="1">
+                <Button
+                    android:id="@+id/button_0"
+                    style="@style/InputButtons"
+                    android:text="@string/zero" />
 
-            <Button
-                android:id="@+id/button_dot"
-                style="@style/InputButtons"
-                android:text="@string/dot" />
+                <ImageButton
+                    android:id="@+id/swap"
+                    style="@style/InputButtons"
+                    android:src="@drawable/ic_swap_vert_white" />
+            </TableRow>
+        </TableLayout>
 
-            <Button
-                android:id="@+id/button_0"
-                style="@style/InputButtons"
-                android:text="@string/zero" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/primary"
+            android:elevation="3dp"
+            android:orientation="vertical">
+
 
             <ImageButton
                 android:id="@+id/button_back"
                 style="@style/InputButtons"
+                android:layout_weight="1"
                 android:src="@drawable/ic_backspace_white" />
+
+            <Button
+                android:id="@+id/button_half"
+                style="@style/InputButtons"
+                android:layout_weight="1"
+                android:text="@string/half" />
+
+            <Button
+                android:id="@+id/button_third"
+                style="@style/InputButtons"
+                android:layout_weight="1"
+                android:text="@string/third" />
 
             <Button
                 android:id="@+id/button_quarter"
                 style="@style/InputButtons"
+                android:layout_weight="1"
                 android:text="@string/quarter" />
-        </TableRow>
-    </TableLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

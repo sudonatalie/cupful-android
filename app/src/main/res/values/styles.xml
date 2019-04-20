@@ -4,7 +4,7 @@
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primaryDark</item>
         <item name="android:colorAccent">@color/accent</item>
-        <item name="android:textSize">@dimen/fontSize</item>
+        <item name="android:textSize">@dimen/bodyText</item>
         <item name="android:textColor">@color/primaryText</item>
     </style>
 
@@ -12,7 +12,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/secondaryText</item>
-        <item name="android:textSize">@dimen/buttonTextSize</item>
+        <item name="android:textSize">@dimen/buttonText</item>
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
     </style>
 

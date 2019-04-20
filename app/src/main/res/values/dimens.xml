@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="buttonTextSize">24sp</dimen>
-    <dimen name="fontSize">18sp</dimen>
+    <dimen name="buttonText">26sp</dimen>
+    <dimen name="bodyText">18sp</dimen>
     <dimen name="margin">10dp</dimen>
 </resources>
