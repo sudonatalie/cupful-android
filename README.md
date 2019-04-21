@@ -2,6 +2,10 @@
 
 ![Cupful header](https://raw.githubusercontent.com/natalieperna/cupful-android/master/images/web_feature_graphic.png)
 
+## Install
+
+[Cupful - Google Play Store](https://play.google.com/store/apps/details?id=com.natalieperna.cupful)
+
 ## About
 
 Cupful is an app that allows you to easily convert amounts of ingredients from volume (i.e. cups, ml, tsp, tbsp) to weight (i.e. g, oz, lb), and vice versa, with over 500 different ingredients supported!
