@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.natalieperna.cupful.R;
-import com.natalieperna.cupful.database.IngredientDatabase;
+import com.natalieperna.cupful.data.IngredientReader;
 import com.natalieperna.cupful.models.DisplayUnit;
 import com.natalieperna.cupful.models.Ingredient;
 import com.natalieperna.cupful.models.Kitchen;
@@ -154,7 +154,8 @@ public class MainActivity extends Activity {
 
     private void setupSpinners() {
         // Show ingredients in spinner
-        List<Ingredient> ingredients = IngredientDatabase.getIngredients(this);
+        IngredientReader ingredientReader = new IngredientReader(this);
+        List<Ingredient> ingredients = ingredientReader.getAll();
         ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ingredients);
         ingredientInput.setAdapter(ingredientAdapter);
 
@@ -183,7 +184,7 @@ public class MainActivity extends Activity {
 
         // Set initial values
         // TODO Avoid hard-coding
-        int flourIndex = 191;
+        int flourIndex = 192;
         int cupUsIndex = 0;
         int gramIndex = 3;
         ingredientInput.setSelection(flourIndex);
