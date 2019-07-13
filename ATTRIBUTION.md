@@ -42,4 +42,3 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
 * [Searchable Spinner Library](https://github.com/miteshpithadiya/SearchableSpinner) is used under the [Apache License, Version 2.0]( http://www.apache.org/licenses/LICENSE-2.0)
-* [SQLite Asset Helper](https://github.com/miteshpithadiya/SearchableSpinner) is used under the [Apache License, Version 2.0]( http://www.apache.org/licenses/LICENSE-2.0)
