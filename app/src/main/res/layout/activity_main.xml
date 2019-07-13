@@ -134,6 +134,7 @@
                 <ImageButton
                     android:id="@+id/swap"
                     style="@style/InputButtons"
+                    android:contentDescription="@string/swap"
                     android:src="@drawable/ic_swap_vert_white" />
             </TableRow>
         </TableLayout>
@@ -151,6 +152,7 @@
                 android:id="@+id/button_back"
                 style="@style/InputButtons"
                 android:layout_weight="1"
+                android:contentDescription="@string/backspace"
                 android:src="@drawable/ic_backspace_white" />
 
             <Button

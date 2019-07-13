@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Cupful</string>
 
+    <!-- Numbers -->
     <string name="zero">0</string>
     <string name="one">1</string>
     <string name="two">2</string>
@@ -12,9 +13,14 @@
     <string name="eight">8</string>
     <string name="nine">9</string>
 
+    <!-- Fractions -->
     <string name="quarter">+¼</string>
     <string name="third">+⅓</string>
     <string name="half">+½</string>
 
     <string name="dot">.</string>
+
+    <!-- Image content descriptions -->
+    <string name="swap">swap</string>
+    <string name="backspace">backspace</string>
 </resources>
