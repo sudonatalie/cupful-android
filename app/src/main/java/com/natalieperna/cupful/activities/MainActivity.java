@@ -184,7 +184,7 @@ public class MainActivity extends Activity {
 
         // Set initial values
         // TODO Avoid hard-coding
-        int flourIndex = 192;
+        int flourIndex = 185;
         int cupUsIndex = 0;
         int gramIndex = 3;
         ingredientInput.setSelection(flourIndex);
