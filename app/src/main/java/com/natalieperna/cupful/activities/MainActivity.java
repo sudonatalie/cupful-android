@@ -222,7 +222,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (ignoreListeners) return;
-                convert(false);
+                convert(true);
             }
 
             @Override
