@@ -5,11 +5,11 @@ import javax.measure.unit.Unit;
 
 public class DisplayUnit<Q extends Quantity> {
     private final Unit<Q> unit;
-    private final String display;
+    private final String name;
 
-    public DisplayUnit(Unit<Q> unit, String display) {
+    public DisplayUnit(Unit<Q> unit, String name) {
         this.unit = unit;
-        this.display = display;
+        this.name = name;
     }
 
     public Unit<Q> getUnit() {
@@ -18,6 +18,6 @@ public class DisplayUnit<Q extends Quantity> {
 
     @Override
     public String toString() {
-        return display;
+        return name;
     }
 }

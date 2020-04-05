@@ -13,9 +13,9 @@ import android.widget.Spinner;
 
 import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.data.IngredientReader;
+import com.natalieperna.cupful.data.Units;
 import com.natalieperna.cupful.models.DisplayUnit;
 import com.natalieperna.cupful.models.Ingredient;
-import com.natalieperna.cupful.models.Kitchen;
 
 import org.jscience.physics.amount.Amount;
 
@@ -24,8 +24,6 @@ import java.util.Locale;
 
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Quantity;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
 public class MainActivity extends Activity {
@@ -123,24 +121,7 @@ public class MainActivity extends Activity {
         ingredientInput.setAdapter(ingredientAdapter);
 
         // Show units in spinners
-        DisplayUnit[] units = {
-                new DisplayUnit<>(Kitchen.CUP_US, "cup (US)"),
-                new DisplayUnit<>(Kitchen.TABLESPOON_US, "tbsp (US)"),
-                new DisplayUnit<>(Kitchen.TEASPOON_US, "tsp (US)"),
-                new DisplayUnit<>(SI.GRAM, "g"),
-                new DisplayUnit<>(SI.KILOGRAM, "kg"),
-                new DisplayUnit<>(NonSI.OUNCE, "oz"),
-                new DisplayUnit<>(NonSI.POUND, "lb"),
-                new DisplayUnit<>(SI.MILLI(NonSI.LITER), "mL"),
-                new DisplayUnit<>(NonSI.LITER, "L"),
-                new DisplayUnit<>(NonSI.OUNCE_LIQUID_US, "fl oz (US)"),
-                new DisplayUnit<>(Kitchen.CUP_UK, "cup (UK)"),
-                new DisplayUnit<>(Kitchen.TABLESPOON_UK, "tbsp (UK)"),
-                new DisplayUnit<>(Kitchen.TEASPOON_UK, "tsp (UK)"),
-                new DisplayUnit<>(NonSI.OUNCE_LIQUID_UK, "fl oz (UK)"),
-        };
-
-        ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, units);
+        ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Units.getAll());
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         topUnit.setAdapter(unitAdapter);
         bottomUnit.setAdapter(unitAdapter);

@@ -1,5 +1,7 @@
 package com.natalieperna.cupful.models;
 
+import com.natalieperna.cupful.data.Units;
+
 import org.jscience.physics.amount.Amount;
 
 import javax.measure.quantity.VolumetricDensity;
@@ -10,7 +12,7 @@ public class Ingredient {
 
     public Ingredient(String name, double baseDensity) {
         this.name = name;
-        this.density = Amount.valueOf(baseDensity, Kitchen.G_PER_CUP);
+        this.density = Amount.valueOf(baseDensity, Units.G_PER_CUP);
     }
 
     public Amount<VolumetricDensity> getDensity() {
