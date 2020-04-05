@@ -19,10 +19,8 @@ import com.natalieperna.cupful.models.Kitchen;
 
 import org.jscience.physics.amount.Amount;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Quantity;
@@ -45,20 +43,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         setupViewWidgets();
-
         setupKeyButtons();
-
-        disableSystemKeyboard();
-
         setupFractionButtons();
-
         setupClearButton();
-
         setupSwapButton();
-
         setupSpinners();
-
         setupChangeListeners();
+        disableSystemKeyboard();
     }
 
     private void setupViewWidgets() {
@@ -71,84 +62,56 @@ public class MainActivity extends Activity {
     }
 
     private void setupKeyButtons() {
-        Map<View, Integer> keyButtons = new HashMap<>();
-        keyButtons.put(findViewById(R.id.button_0), KeyEvent.KEYCODE_0);
-        keyButtons.put(findViewById(R.id.button_1), KeyEvent.KEYCODE_1);
-        keyButtons.put(findViewById(R.id.button_2), KeyEvent.KEYCODE_2);
-        keyButtons.put(findViewById(R.id.button_3), KeyEvent.KEYCODE_3);
-        keyButtons.put(findViewById(R.id.button_4), KeyEvent.KEYCODE_4);
-        keyButtons.put(findViewById(R.id.button_5), KeyEvent.KEYCODE_5);
-        keyButtons.put(findViewById(R.id.button_6), KeyEvent.KEYCODE_6);
-        keyButtons.put(findViewById(R.id.button_7), KeyEvent.KEYCODE_7);
-        keyButtons.put(findViewById(R.id.button_8), KeyEvent.KEYCODE_8);
-        keyButtons.put(findViewById(R.id.button_9), KeyEvent.KEYCODE_9);
-        keyButtons.put(findViewById(R.id.button_dot), KeyEvent.KEYCODE_PERIOD);
-        keyButtons.put(findViewById(R.id.button_back), KeyEvent.KEYCODE_DEL);
-
-        for (final Map.Entry<View, Integer> keyButton : keyButtons.entrySet()) {
-            keyButton.getKey().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pressKey(keyButton.getValue());
-                }
-            });
-        }
-    }
-
-    private void disableSystemKeyboard() {
-        topInput.setShowSoftInputOnFocus(false);
-        bottomInput.setShowSoftInputOnFocus(false);
+        setKeyButtonClickListener(R.id.button_0, KeyEvent.KEYCODE_0);
+        setKeyButtonClickListener(R.id.button_1, KeyEvent.KEYCODE_1);
+        setKeyButtonClickListener(R.id.button_2, KeyEvent.KEYCODE_2);
+        setKeyButtonClickListener(R.id.button_3, KeyEvent.KEYCODE_3);
+        setKeyButtonClickListener(R.id.button_4, KeyEvent.KEYCODE_4);
+        setKeyButtonClickListener(R.id.button_5, KeyEvent.KEYCODE_5);
+        setKeyButtonClickListener(R.id.button_6, KeyEvent.KEYCODE_6);
+        setKeyButtonClickListener(R.id.button_7, KeyEvent.KEYCODE_7);
+        setKeyButtonClickListener(R.id.button_8, KeyEvent.KEYCODE_8);
+        setKeyButtonClickListener(R.id.button_9, KeyEvent.KEYCODE_9);
+        setKeyButtonClickListener(R.id.button_dot, KeyEvent.KEYCODE_PERIOD);
+        setKeyButtonClickListener(R.id.button_back, KeyEvent.KEYCODE_DEL);
     }
 
     private void setupFractionButtons() {
-        View.OnClickListener fractionInputListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFraction(view);
-            }
-        };
-
-        findViewById(R.id.button_quarter).setOnClickListener(fractionInputListener);
-        findViewById(R.id.button_third).setOnClickListener(fractionInputListener);
-        findViewById(R.id.button_half).setOnClickListener(fractionInputListener);
+        setFractionButtonClickListener(R.id.button_quarter, 0.25f);
+        setFractionButtonClickListener(R.id.button_third, 0.33f);
+        setFractionButtonClickListener(R.id.button_half, 0.5f);
     }
 
     private void setupClearButton() {
-        findViewById(R.id.button_back).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ignoreListeners = true;
+        findViewById(R.id.button_back).setOnLongClickListener(v -> {
+            ignoreListeners = true;
 
-                topInput.getText().clear();
-                bottomInput.getText().clear();
+            topInput.getText().clear();
+            bottomInput.getText().clear();
 
-                ignoreListeners = false;
+            ignoreListeners = false;
 
-                return true;
-            }
+            return true;
         });
     }
 
     private void setupSwapButton() {
-        findViewById(R.id.swap).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ignoreListeners = true;
+        findViewById(R.id.swap).setOnClickListener(v -> {
+            ignoreListeners = true;
 
-                // Swap units
-                int tempPosition = topUnit.getSelectedItemPosition();
-                topUnit.setSelection(bottomUnit.getSelectedItemPosition());
-                bottomUnit.setSelection(tempPosition);
+            // Swap units
+            int tempPosition = topUnit.getSelectedItemPosition();
+            topUnit.setSelection(bottomUnit.getSelectedItemPosition());
+            bottomUnit.setSelection(tempPosition);
 
-                // Swap values
-                CharSequence tempText = topInput.getText();
-                topInput.setText(bottomInput.getText());
-                bottomInput.setText(tempText);
+            // Swap values
+            CharSequence tempText = topInput.getText();
+            topInput.setText(bottomInput.getText());
+            bottomInput.setText(tempText);
 
-                // TODO Maintain cursor location
+            // TODO Maintain cursor location
 
-                ignoreListeners = false;
-            }
+            ignoreListeners = false;
         });
     }
 
@@ -194,7 +157,7 @@ public class MainActivity extends Activity {
 
     private void setupChangeListeners() {
         // Listen for changes to ingredients/units and convert
-        ingredientInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (ignoreListeners) return;
@@ -205,31 +168,10 @@ public class MainActivity extends Activity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
-        topUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (ignoreListeners) return;
-                convert(true);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        bottomUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (ignoreListeners) return;
-                convert(true);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        };
+        ingredientInput.setOnItemSelectedListener(listener);
+        topUnit.setOnItemSelectedListener(listener);
+        bottomUnit.setOnItemSelectedListener(listener);
 
         // Listen for changes to input/output and convert
         topInput.addTextChangedListener(new TextWatcher() {
@@ -268,36 +210,21 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void pressKey(int key) {
-        getFocusedInput().dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
+    private void disableSystemKeyboard() {
+        topInput.setShowSoftInputOnFocus(false);
+        bottomInput.setShowSoftInputOnFocus(false);
     }
 
-    private void addFraction(View view) {
-        EditText focusedInput = getFocusedInput();
-        String focusString = focusedInput.getText().toString();
+    private void setKeyButtonClickListener(final int resId, final int keyCode) {
+        View button = findViewById(resId);
+        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, keyCode);
+        button.setOnClickListener(v ->
+                getFocusedInput().dispatchKeyEvent(event));
+    }
 
-        double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
-
-        switch (view.getId()) {
-            case R.id.button_quarter:
-                val += 0.25;
-                break;
-            case R.id.button_third:
-                val += 0.33;
-                break;
-            case R.id.button_half:
-                val += 0.5;
-                break;
-        }
-
-        // Weird rounding mostly to account for +⅓ three times
-        double fractional = val % 1;
-        if (fractional <= 0.01 || fractional >= 0.99) {
-            val = Math.round(val);
-        }
-
-        focusedInput.setText(naturalFormat(val));
-        focusedInput.setSelection(focusedInput.getText().length());
+    private void setFractionButtonClickListener(final int resId, final float val) {
+        View button = findViewById(resId);
+        button.setOnClickListener(v -> addFraction(val));
     }
 
     private void convert(boolean forward) {
@@ -350,6 +277,23 @@ public class MainActivity extends Activity {
 
     private EditText getFocusedInput() {
         return bottomInput.hasFocus() ? bottomInput : topInput;
+    }
+
+    private void addFraction(float fractionValue) {
+        EditText focusedInput = getFocusedInput();
+        String focusString = focusedInput.getText().toString();
+
+        double val = focusString.isEmpty() ? 0 : Double.valueOf(focusString);
+        val += fractionValue;
+
+        // Weird rounding mostly to account for +⅓ three times
+        double fractional = val % 1;
+        if (fractional <= 0.01 || fractional >= 0.99) {
+            val = Math.round(val);
+        }
+
+        focusedInput.setText(naturalFormat(val));
+        focusedInput.setSelection(focusedInput.getText().length());
     }
 
     private static String naturalFormat(double d) {
