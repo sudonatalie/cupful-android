@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.data.IngredientReader;
 import com.natalieperna.cupful.data.Units;
@@ -26,7 +28,7 @@ import javax.measure.quantity.Mass;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.Unit;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private boolean ignoreListeners = false;
 
