@@ -1,6 +1,5 @@
 package com.natalieperna.cupful.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -121,6 +120,19 @@ public class MainActivity extends AppCompatActivity {
         List<Ingredient> ingredients = ingredientReader.getAll();
         ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ingredients);
         ingredientInput.setAdapter(ingredientAdapter);
+        ingredientInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ingredientInput.setSelection(position);
+                if (ignoreListeners) return;
+                convert(true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // Show units in spinners
         ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Units.getAll());
@@ -152,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        ingredientInput.setOnItemSelectedListener(listener);
+//        ingredientInput.setOnItemSelectedListener(listener);
         topUnit.setOnItemSelectedListener(listener);
         bottomUnit.setOnItemSelectedListener(listener);
 
