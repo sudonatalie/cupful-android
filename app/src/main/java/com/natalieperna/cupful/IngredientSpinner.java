@@ -12,6 +12,7 @@ import android.widget.SpinnerAdapter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.natalieperna.cupful.models.Ingredient;
@@ -58,13 +59,14 @@ public class IngredientSpinner extends AppCompatSpinner {
     @NonNull
     private AlertDialog createDialog() {
         // Inflate dialog custom content view
-        LayoutInflater inflater = LayoutInflater.from(getPopupContext());
+        Context context = getPopupContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.searchable_spinner_dialog, null);
         RecyclerView recyclerView = dialogView.findViewById(R.id.dialog_list_view);
         SearchView searchView = (SearchView) dialogView.findViewById(R.id.search);
 
         // Build dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getPopupContext())
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setView(dialogView)
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
@@ -74,6 +76,7 @@ public class IngredientSpinner extends AppCompatSpinner {
             setSelection(pos);
             dialog.dismiss();
         });
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(dialogAdapter);
 
         // Setup search view
