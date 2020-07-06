@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.natalieperna.cupful.R;
+import com.natalieperna.cupful.IngredientSpinner;
 import com.natalieperna.cupful.data.IngredientReader;
 import com.natalieperna.cupful.data.Units;
 import com.natalieperna.cupful.models.DisplayUnit;
@@ -20,7 +21,6 @@ import com.natalieperna.cupful.models.Ingredient;
 
 import org.jscience.physics.amount.Amount;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.measure.quantity.Mass;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean ignoreListeners = false;
 
-    private Spinner ingredientInput;
+    private IngredientSpinner ingredientInput;
     private Spinner topUnit, bottomUnit;
     private EditText topInput, bottomInput;
 
@@ -117,22 +117,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupSpinners() {
         // Show ingredients in spinner
         IngredientReader ingredientReader = new IngredientReader(this);
-        List<Ingredient> ingredients = ingredientReader.getAll();
-        ArrayAdapter<Ingredient> ingredientAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ingredients);
-        ingredientInput.setAdapter(ingredientAdapter);
-        ingredientInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ingredientInput.setSelection(position);
-                if (ignoreListeners) return;
-                convert(true);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        ingredientInput.setIngredients(ingredientReader.getAll());
 
         // Show units in spinners
         ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Units.getAll());
@@ -164,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-//        ingredientInput.setOnItemSelectedListener(listener);
+        ingredientInput.setOnItemSelectedListener(listener);
         topUnit.setOnItemSelectedListener(listener);
         bottomUnit.setOnItemSelectedListener(listener);
 
