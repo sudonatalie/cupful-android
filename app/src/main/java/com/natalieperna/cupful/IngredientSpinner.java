@@ -5,10 +5,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -62,6 +61,7 @@ public class IngredientSpinner extends AppCompatSpinner {
         LayoutInflater inflater = LayoutInflater.from(getPopupContext());
         View dialogView = inflater.inflate(R.layout.searchable_spinner_dialog, null);
         RecyclerView recyclerView = dialogView.findViewById(R.id.dialog_list_view);
+        SearchView searchView = (SearchView) dialogView.findViewById(R.id.search);
 
         // Build dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getPopupContext())
@@ -70,55 +70,26 @@ public class IngredientSpinner extends AppCompatSpinner {
         AlertDialog dialog = builder.create();
 
         // Set dialog adapter
-        DialogAdapter dialogAdapter = new DialogAdapter(ingredients, pos -> {
+        IngredientAdapter dialogAdapter = new IngredientAdapter(ingredients, pos -> {
             setSelection(pos);
             dialog.dismiss();
         });
         recyclerView.setAdapter(dialogAdapter);
 
-        return dialog;
-    }
-
-    private static class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder> {
-        private List<Ingredient> ingredients;
-        private OnItemSelectedListener listener;
-
-        public DialogAdapter(List<Ingredient> ingredients, OnItemSelectedListener listener) {
-            this.ingredients = ingredients;
-            this.listener = listener;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View ingredientView = inflater.inflate(R.layout.ingredient_item, parent, false);
-            return new ViewHolder(ingredientView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Ingredient ingredient = ingredients.get(position);
-            holder.textView.setText(ingredient.getName());
-            holder.itemView.setOnClickListener(view -> listener.onItemSelected(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return ingredients.size();
-        }
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView textView;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                textView = ((TextView) itemView.findViewById(R.id.ingredient_name));
+        // Setup search view
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
-        }
 
-        interface OnItemSelectedListener {
-            void onItemSelected(int position);
-        }
+            @Override
+            public boolean onQueryTextChange(String query) {
+                dialogAdapter.filter(query);
+                return false;
+            }
+        });
+
+        return dialog;
     }
 }
