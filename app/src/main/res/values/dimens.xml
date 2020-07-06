@@ -3,4 +3,5 @@
     <dimen name="buttonText">26sp</dimen>
     <dimen name="bodyText">18sp</dimen>
     <dimen name="margin">10dp</dimen>
+    <dimen name="minTouch">48dp</dimen>
 </resources>
