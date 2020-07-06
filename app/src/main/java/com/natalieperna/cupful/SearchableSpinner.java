@@ -2,6 +2,7 @@ package com.natalieperna.cupful;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
@@ -26,19 +27,26 @@ public class SearchableSpinner extends AppCompatSpinner {
             return;
         }
 
-        // TODO Try extending AlertDialog and doing the ListView stuff onCreate?
+        AlertDialog dialog = createDialog();
+        dialog.show();
+    }
+
+    private AlertDialog createDialog() {
+        View dialogView = inflate(getPopupContext(), R.layout.searchable_spinner_dialog, null);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getPopupContext())
-                .setView(R.layout.searchable_spinner_dialog)
+                .setView(dialogView)
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
-        dialog.show();
 
-        ListView listView = dialog.findViewById(R.id.dialog_list_view);
-        listView.setAdapter((ListAdapter) adapter);
+        ListView listView = dialogView.findViewById(R.id.dialog_list_view);
+        listView.setAdapter((ListAdapter) getAdapter());
         listView.setOnItemClickListener((parent, view, position, id) -> {
             // Propagate dialog selection to Spinner and close
             getOnItemSelectedListener().onItemSelected(parent, view, position, id);
             dialog.dismiss();
         });
+
+        return dialog;
     }
 }
