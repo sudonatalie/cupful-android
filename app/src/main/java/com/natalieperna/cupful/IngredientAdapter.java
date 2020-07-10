@@ -82,9 +82,27 @@ class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolde
         filter.filter(query);
     }
 
-    private boolean matches(String name, String constraint) {
-        String pattern = constraint.toLowerCase().trim();
-        return name.toLowerCase().contains(pattern);
+    /**
+     * TODO: This seems fast "enough", but it'd be worth measuring and considering caching/indexing
+     *
+     * @param source String to search in
+     * @param query  Query to search for
+     * @return true iff source contains all keywords in query, case-insensitive
+     */
+    private boolean matches(String source, String query) {
+        // Source string to search, case-insensitive
+        String s = source.toLowerCase();
+
+        // Quick: Search for whole phrase
+        String phrase = query.toLowerCase().trim();
+        if (s.contains(phrase)) return true;
+
+        // Slower: Split query into individual keywords and search for all
+        String[] keywords = phrase.split("\\P{L}+");
+        for (String keyword : keywords) {
+            if (!s.contains(keyword)) return false;
+        }
+        return true;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
