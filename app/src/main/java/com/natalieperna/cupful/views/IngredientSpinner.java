@@ -1,4 +1,4 @@
-package com.natalieperna.cupful;
+package com.natalieperna.cupful.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -15,6 +15,8 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.natalieperna.cupful.R;
+import com.natalieperna.cupful.adapters.IngredientAdapter;
 import com.natalieperna.cupful.models.Ingredient;
 
 import java.util.List;

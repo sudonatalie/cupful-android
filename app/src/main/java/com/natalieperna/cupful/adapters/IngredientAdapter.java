@@ -1,4 +1,4 @@
-package com.natalieperna.cupful;
+package com.natalieperna.cupful.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.natalieperna.cupful.R;
 import com.natalieperna.cupful.models.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
     private static final String TAG = "IngredientAdapter";
 
     private final List<Ingredient> allIngredients;
@@ -114,7 +115,7 @@ class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolde
         }
     }
 
-    interface OnItemSelectedListener {
+    public interface OnItemSelectedListener {
         void onItemSelected(int position);
     }
 }
