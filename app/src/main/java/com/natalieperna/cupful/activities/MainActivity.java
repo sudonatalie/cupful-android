@@ -13,11 +13,11 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.natalieperna.cupful.R;
-import com.natalieperna.cupful.views.IngredientSpinner;
 import com.natalieperna.cupful.data.IngredientReader;
 import com.natalieperna.cupful.data.Units;
 import com.natalieperna.cupful.models.DisplayUnit;
 import com.natalieperna.cupful.models.Ingredient;
+import com.natalieperna.cupful.views.IngredientSpinner;
 
 import org.jscience.physics.amount.Amount;
 
