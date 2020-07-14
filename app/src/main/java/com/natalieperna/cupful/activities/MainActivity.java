@@ -6,16 +6,15 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.natalieperna.cupful.R;
+import com.natalieperna.cupful.adapters.UnitAdapter;
 import com.natalieperna.cupful.data.IngredientReader;
 import com.natalieperna.cupful.data.Units;
-import com.natalieperna.cupful.models.DisplayUnit;
 import com.natalieperna.cupful.models.Ingredient;
 import com.natalieperna.cupful.views.IngredientSpinner;
 
@@ -120,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
         ingredientInput.setIngredients(ingredientReader.getAll());
 
         // Show units in spinners
-        ArrayAdapter<DisplayUnit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Units.getAll());
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        UnitAdapter unitAdapter = new UnitAdapter(this, Units.getAll());
         topUnit.setAdapter(unitAdapter);
         bottomUnit.setAdapter(unitAdapter);
 
@@ -224,8 +222,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Get ingredients and units
         Ingredient ingredient = (Ingredient) ingredientInput.getSelectedItem();
-        Unit<? extends Quantity> fromUnit = ((DisplayUnit<? extends Quantity>) fromUnitSpinner.getSelectedItem()).getUnit();
-        Unit<? extends Quantity> toUnit = ((DisplayUnit<? extends Quantity>) toUnitSpinner.getSelectedItem()).getUnit();
+        Unit<? extends Quantity> fromUnit = (Unit<? extends Quantity>) fromUnitSpinner.getSelectedItem();
+        Unit<? extends Quantity> toUnit = (Unit<? extends Quantity>) toUnitSpinner.getSelectedItem();
 
         // Get from value
         String fromString = fromInput.getText().toString();
