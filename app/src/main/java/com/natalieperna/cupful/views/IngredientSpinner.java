@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.SpinnerAdapter;
@@ -72,6 +73,9 @@ public class IngredientSpinner extends AppCompatSpinner {
                 .setView(dialogView)
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
+
+        // Resize with soft keyboard
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         // Set dialog adapter
         IngredientAdapter dialogAdapter = new IngredientAdapter(ingredients, pos -> {
