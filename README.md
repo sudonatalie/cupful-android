@@ -13,8 +13,6 @@ It's an essential tool for every baker and chef who values precise measurements 
 
 ## Screenshots
 
-TODO: Update these.
-
 | Conversion                 | Ingredients                |
 |:--------------------------:|:--------------------------:|
 | ![Screenshot][screenshot1] | ![Screenshot][screenshot4] |
